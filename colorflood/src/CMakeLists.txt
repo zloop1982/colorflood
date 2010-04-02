@@ -27,5 +27,6 @@ include(${QT_USE_FILE})
 
 QT4_WRAP_CPP(moc_src ${moc})
 
+add_definitions(-Wall -Wextra)
 add_executable(colorflood ${moc_src} ${src})
 target_link_libraries(colorflood ${QT_LIBRARIES})
