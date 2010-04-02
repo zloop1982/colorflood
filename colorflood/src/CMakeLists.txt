@@ -13,6 +13,7 @@ set(src
   field.cpp
   main.cpp
   window.cpp
+  colorscheme.cpp
   )
 
 set(moc

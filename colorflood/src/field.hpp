@@ -33,7 +33,14 @@ public:
         NUM_SIZES
     }FieldSize;
 
-    Field (QWidget *parent, const QVector<QBrush> &brushes, FieldSize size);
+    typedef struct
+    {
+        quint8 brush;
+        bool   flood;
+    }FieldRect;
+
+    typedef QVector<Field::FieldRect> RectVector;
+
     Field (QWidget *parent);
     ~Field ();
 
@@ -44,21 +51,14 @@ public:
     static int getNumTurnsOfSize (FieldSize size);
 
 private:
-    typedef struct
-    {
-        char brush;
-        bool flood;
-    }FieldRect;
-
     static const int rects[NUM_SIZES];
     static const int turns[NUM_SIZES];
 
     void init (const QVector<QBrush> &brushes, FieldSize size);
     static int getRectSize (FieldSize size);
 
-    FieldSize          size;
-    QVector<QBrush>    brushes;
-    QVector<FieldRect> data;
+    FieldSize  size;
+    RectVector data;
 
 protected:
     void paintEvent (QPaintEvent *event);

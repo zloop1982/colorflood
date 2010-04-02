@@ -25,6 +25,9 @@ class Window : public QWidget
 public:
     Window ();
 
+public slots:
+    void randomize ();
+
 private:
     Field *field;
 };

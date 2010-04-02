@@ -18,34 +18,24 @@
 Window::Window ()
     : QWidget()
 {
-    setWindowTitle(tr("Color flood"));
+    setWindowTitle(tr("Color Flood"));
 
-    setWindowState(windowState() | Qt::WindowFullScreen);
+    //setWindowState(windowState() | Qt::WindowFullScreen);
 
-    QVector<QBrush> brushes;
+    QPushButton *button = new QPushButton("randomize", this);
+    field = new Field(this);
 
-#if 1
-    // standart color scheme
-    brushes << QBrush(QColor(0x00, 0x00, 0xff)); // blue
-    brushes << QBrush(QColor(0xff, 0x00, 0x00)); // red
-    brushes << QBrush(QColor(0x00, 0xff, 0x00)); // green
-    brushes << QBrush(QColor(0xff, 0xff, 0x00)); // yellow
-    brushes << QBrush(QColor(0xff, 0x00, 0xff)); // magenta
-    brushes << QBrush(QColor(0x80, 0x00, 0x80)); // purple
-#else
-    // color-blind color scheme
-    brushes << QBrush(QColor(0x00, 0x00, 0x00));
-    brushes << QBrush(QColor(0x31, 0x31, 0x31), Qt::Dense1Pattern);
-    brushes << QBrush(QColor(0x62, 0x62, 0x62), Qt::Dense3Pattern);
-    brushes << QBrush(QColor(0x93, 0x93, 0x93), Qt::CrossPattern);
-    brushes << QBrush(QColor(0xc4, 0xc4, 0xc4));
-    brushes << QBrush(QColor(0xff, 0xff, 0xff));
-#endif
-
-    field = new Field(this, brushes, Field::SIZE_LARGE);
+    QObject::connect(button, SIGNAL(pressed()), this, SLOT(randomize()));
 
     QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(button);
+    layout->setAlignment(button, Qt::AlignLeft);
     layout->addWidget(field);
     layout->setAlignment(field, Qt::AlignRight);
     setLayout(layout);
+}
+
+void Window::randomize ()
+{
+    field->randomize();
 }
