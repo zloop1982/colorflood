@@ -23,6 +23,9 @@ int main (int argc, char **argv)
 {
     QApplication app(argc, argv);
 
+    QCoreApplication::setOrganizationName("ftrvxmtrx");
+    QCoreApplication::setApplicationName("Color Flood");
+
     Window window;
     window.show();
 
