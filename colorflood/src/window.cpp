@@ -11,7 +11,8 @@
   GNU General Public License for more details.
 */
 
-#include <QtGui>
+#include <QPushButton>
+#include <QHBoxLayout>
 #include "window.hpp"
 #include "field.hpp"
 

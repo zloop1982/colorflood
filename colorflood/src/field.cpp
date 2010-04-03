@@ -11,7 +11,12 @@
   GNU General Public License for more details.
 */
 
-#include <QtGui>
+#include <QMetaType>
+#include <QDataStream>
+#include <QSettings>
+#include <QTime>
+#include <QPainter>
+#include <QPaintEvent>
 #include "field.hpp"
 #include "colorscheme.hpp"
 
