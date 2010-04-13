@@ -243,7 +243,7 @@ void Field::flood (int colorIndex)
         }
     }
 
-    update();
+    repaint();
 
     bool allFlooded = true;
 
@@ -259,22 +259,26 @@ void Field::flood (int colorIndex)
         }
     }
 
+    QString msg;
+
     if (allFlooded)
     {
         finished = true;
-
-        QMessageBox box;
         /*: win message */
-        box.setText(tr("You won!"));
-        box.exec();
+        msg = tr("You won!");
     }
     else if (getNumTurnsOfSize(size) == turns)
     {
         finished = true;
-
-        QMessageBox box;
         /*: fail message */
-        box.setText(tr("You lost!"));
+        msg = tr("You lost!");
+    }
+
+    if (finished)
+    {
+        QMessageBox box;
+        box.setText(msg);
         box.exec();
+        randomize();
     }
 }
