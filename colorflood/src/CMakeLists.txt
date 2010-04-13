@@ -38,3 +38,7 @@ qt4_add_resources(resources colorflood.qrc)
 add_definitions(-Wall -Wextra)
 add_executable(colorflood ${moc_src} ${src} ${res})
 target_link_libraries(colorflood ${QT_LIBRARIES})
+
+install(TARGETS colorflood DESTINATION bin)
+install(FILES images/icon_48x48.png DESTINATION share/icons/hicolor/48x48/apps RENAME colorflood.png)
+install(FILES colorflood.desktop DESTINATION share/applications/hildon)
