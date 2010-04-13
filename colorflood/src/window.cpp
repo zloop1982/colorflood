@@ -44,6 +44,7 @@ Window::Window ()
                      SLOT(flood(int)));
 
     turnsLabel = new QLabel(this);
+    turnsLabel->setAlignment(Qt::AlignRight);
 
     QObject::connect(field,
                      SIGNAL(turnsChanged(int)),
@@ -69,7 +70,7 @@ Window::Window ()
 void Window::updateTurns (int turns)
 {
     /*: number of turns */
-    turnsLabel->setText(tr("Turns: %1/%2")
+    turnsLabel->setText(tr("<font size=\"24\">Turns: %1/%2</font>")
                         .arg(turns)
                         .arg(field->getNumTurnsOfSize(field->getSize())));
 }

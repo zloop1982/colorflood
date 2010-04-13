@@ -40,5 +40,6 @@ ColorButtons::ColorButtons (QWidget *parent)
                      this,
                      SIGNAL(flood(int)));
 
+    layout->setSpacing(24);
     setLayout(layout);
 }
