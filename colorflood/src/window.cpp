@@ -27,7 +27,7 @@ Window::Window ()
 
     setWindowState(windowState() | Qt::WindowFullScreen);
 
-    new FullScreenExitButton(this);
+    //new FullScreenExitButton(this);
 
     int turns;
     field = new Field(this, &turns);

@@ -21,7 +21,7 @@ set(src
 set(moc
   colorbuttons.hpp
   field.hpp
-  fullscreenexitbutton.hpp
+  #fullscreenexitbutton.hpp
   window.hpp
   )
 
