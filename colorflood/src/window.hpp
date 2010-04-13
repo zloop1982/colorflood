@@ -26,10 +26,10 @@ class Window : public QWidget
 
 public:
     Window ();
+    ~Window ();
 
 private slots:
     void updateTurns (int turns);
-    void toggleFullscreen ();
 
 private:
     ColorButtons *colorButtons;
