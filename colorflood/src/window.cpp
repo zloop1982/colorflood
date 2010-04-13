@@ -24,8 +24,13 @@ Window::Window ()
     : QWidget()
 {
     setWindowTitle("Color Flood");
+    setWindowIcon(QIcon(":/images/icon_48x48.png"));
 
+#if defined(Q_WS_HILDON) || defined(Q_WS_MAEMO_5)
     setWindowState(windowState() | Qt::WindowFullScreen);
+#else
+    setFixedSize(800, 480);
+#endif
 
     //new FullScreenExitButton(this);
 
