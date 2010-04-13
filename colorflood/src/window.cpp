@@ -53,17 +53,17 @@ Window::Window ()
     updateTurns(turns);
 
     QVBoxLayout *vl = new QVBoxLayout;
+    vl->addWidget(colorButtons);
+    vl->setAlignment(colorButtons, Qt::AlignRight | Qt::AlignTop);
     vl->addWidget(turnsLabel);
-    vl->setAlignment(turnsLabel, Qt::AlignTop);
+    vl->setAlignment(turnsLabel, Qt::AlignRight | Qt::AlignTop);
 
     QHBoxLayout *hl = new QHBoxLayout;
-    hl->addWidget(colorButtons);
-    hl->setAlignment(colorButtons, Qt::AlignLeft);
     hl->addWidget(field);
-    hl->setAlignment(field, Qt::AlignRight);
+    hl->setAlignment(field, Qt::AlignLeft);
+    hl->addLayout(vl);
 
-    vl->addLayout(hl);
-    setLayout(vl);
+    setLayout(hl);
 }
 
 void Window::updateTurns (int turns)
