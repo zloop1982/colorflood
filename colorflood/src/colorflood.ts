@@ -4,13 +4,13 @@
 <context>
     <name>Field</name>
     <message>
-        <location filename="field.cpp" line="262"/>
+        <location filename="field.cpp" line="273"/>
         <source>You won!</source>
         <extracomment>win message</extracomment>
         <translation type="unfinished">Вы выиграли!</translation>
     </message>
     <message>
-        <location filename="field.cpp" line="268"/>
+        <location filename="field.cpp" line="279"/>
         <source>You lost!</source>
         <extracomment>fail message</extracomment>
         <translation type="unfinished">Вы проиграли!</translation>
@@ -20,29 +20,47 @@
     <name>QObject</name>
     <message>
         <location filename="colorscheme.cpp" line="33"/>
-        <source>Default</source>
+        <source>Default scheme</source>
+        <oldsource>Default</oldsource>
         <extracomment>default color scheme name</extracomment>
-        <translation type="unfinished">Стандартная</translation>
+        <translation type="unfinished">Стандартная схема</translation>
     </message>
     <message>
         <location filename="colorscheme.cpp" line="43"/>
-        <source>Black-and-white</source>
+        <source>Black-and-white scheme</source>
+        <oldsource>Black-and-white</oldsource>
         <extracomment>black-and-white color scheme name</extracomment>
-        <translation type="unfinished">Чёрно-белая</translation>
+        <translation type="unfinished">Чёрно-белая схема</translation>
     </message>
 </context>
 <context>
     <name>Window</name>
     <message>
-        <location filename="window.cpp" line="49"/>
+        <location filename="window.cpp" line="51"/>
         <source>New game</source>
         <translation type="unfinished">Новая игра</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="86"/>
-        <source>&lt;font size=&quot;16&quot;&gt;Turns: %1/%2&lt;/font&gt;</source>
+        <location filename="window.cpp" line="72"/>
+        <source>Fullscreen mode</source>
+        <translation type="unfinished">Полноэкранный режим</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="84"/>
+        <source>Less cells</source>
+        <translation type="unfinished">Меньше клеток</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="96"/>
+        <source>More cells</source>
+        <translation type="unfinished">Больше клеток</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="110"/>
+        <source>&lt;font size=&quot;12&quot;&gt;Turns: %1/%2&lt;/font&gt;</source>
+        <oldsource>&lt;font size=&quot;16&quot;&gt;Turns: %1/%2&lt;/font&gt;</oldsource>
         <extracomment>number of turns</extracomment>
-        <translation type="unfinished">&lt;font size=&quot;16&quot;&gt;Шагов: %1/%2&lt;/font&gt;</translation>
+        <translation type="unfinished">&lt;font size=&quot;12&quot;&gt;Шагов: %1/%2&lt;/font&gt;</translation>
     </message>
 </context>
 </TS>

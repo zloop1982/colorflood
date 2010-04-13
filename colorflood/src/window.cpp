@@ -16,10 +16,12 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QSettings>
+#include <QMenuBar>
 #include "window.hpp"
 #include "colorbuttons.hpp"
 #include "field.hpp"
 #include "fullscreenexitbutton.hpp"
+#include "colorscheme.hpp"
 
 Window::Window ()
     : QWidget()
@@ -64,26 +66,88 @@ Window::Window ()
 
     setLayout(hl);
 
-    QSettings settings;
+    /* menu bar */
+    QMenuBar *bar = new QMenuBar(this);
 
-    if (settings.value("fullscreen", true).toBool())
-        showFullScreen();
+    QObject::connect(bar->addAction(tr("Fullscreen mode")),
+                     SIGNAL(triggered()),
+                     this,
+                     SLOT(fullScreenMode()));
+
+    QObject::connect(bar->addAction(
+                         ColorScheme::getSchemeName(
+                             ColorScheme::getNextColorScheme())),
+                     SIGNAL(triggered()),
+                     this,
+                     SLOT(colorScheme()));
+
+    less = bar->addAction(tr("Less cells"));
+
+    QObject::connect(less,
+                     SIGNAL(triggered()),
+                     this,
+                     SLOT(lessCells()));
+
+    more = bar->addAction(tr("More cells"));
+
+    QObject::connect(more,
+                     SIGNAL(triggered()),
+                     this,
+                     SLOT(moreCells()));
+
+    if (!field->getSize())
+        less->setEnabled(false);
+    else if (field->getSize() == Field::NUM_SIZES - 1)
+        more->setEnabled(false);
 
     new FullScreenExitButton(this);
-}
-
-Window::~Window ()
-{
-    bool isFullscreen = windowState() & Qt::WindowFullScreen;
-
-    QSettings settings;
-    settings.setValue("fullscreen", isFullscreen);
+    showFullScreen();
 }
 
 void Window::updateTurns (int turns)
 {
     /*: number of turns */
-    turnsLabel->setText(tr("<font size=\"16\">Turns: %1/%2</font>")
+    turnsLabel->setText(tr("<font size=\"12\">Turns: %1/%2</font>")
                         .arg(turns)
                         .arg(field->getNumTurnsOfSize(field->getSize())));
+}
+
+void Window::fullScreenMode ()
+{
+    showFullScreen();
+}
+
+void Window::lessCells ()
+{
+    int s = field->getSize() - 1;
+
+    field->setSize(s);
+    more->setEnabled(true);
+
+    if (!s)
+        less->setEnabled(false);
+}
+
+void Window::moreCells ()
+{
+    int s = field->getSize() + 1;
+
+    field->setSize(s);
+    less->setEnabled(true);
+
+    if (s == Field::NUM_SIZES - 1)
+        more->setEnabled(false);
+}
+
+void Window::colorScheme ()
+{
+    QAction *action = static_cast<typeof(action)>(QObject::sender());
+
+    ColorScheme::setScheme(ColorScheme::getNextColorScheme());
+
+    field->update();
+    colorButtons->update();
+
+    action->setText(ColorScheme::getSchemeName(
+                        ColorScheme::getNextColorScheme()));
 }

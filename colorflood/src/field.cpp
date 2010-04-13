@@ -114,6 +114,17 @@ Field::FieldSize Field::getSize () const
     return size;
 }
 
+void Field::setSize (int size)
+{
+    Q_ASSERT(size >= 0 && size < NUM_SIZES);
+
+    if (this->size == size)
+        return;
+
+    this->size = (FieldSize)size;
+    randomize();
+}
+
 void Field::randomize ()
 {
     FieldRect rect;

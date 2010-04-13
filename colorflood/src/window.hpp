@@ -19,6 +19,7 @@
 class ColorButtons;
 class Field;
 class QLabel;
+class QAction;
 
 class Window : public QWidget
 {
@@ -26,15 +27,20 @@ class Window : public QWidget
 
 public:
     Window ();
-    ~Window ();
 
 private slots:
     void updateTurns (int turns);
+    void fullScreenMode ();
+    void colorScheme ();
+    void lessCells ();
+    void moreCells ();
 
 private:
     ColorButtons *colorButtons;
     Field *field;
     QLabel *turnsLabel;
+    QAction *less;
+    QAction *more;
 };
 
 #endif // !_WINDOW_HPP

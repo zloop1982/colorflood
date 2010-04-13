@@ -46,6 +46,7 @@ public:
     ~Field ();
 
     FieldSize getSize () const;
+    void setSize (int size);
 
     static int getNumRectsOfSize (FieldSize size);
     static int getNumTurnsOfSize (FieldSize size);

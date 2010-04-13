@@ -30,17 +30,17 @@ ColorScheme::ColorScheme ()
     s << QColor(0xf0, 0x70, 0xa0);
     s << QColor(0xdc, 0x4a, 0x20);
     /*: default color scheme name */
-    schemes << QPair<QString, QVector<QBrush> >(QObject::tr("Default"), s);
+    schemes << QPair<QString, QVector<QBrush> >(QObject::tr("Default scheme"), s);
 
     s.clear();
     s << QBrush(QColor(0x00, 0x00, 0x00), Qt::SolidPattern);
-    s << QBrush(QColor(0x33, 0x33, 0x33), Qt::Dense3Pattern);
+    s << QBrush(QColor(0x20, 0x20, 0x20), Qt::Dense3Pattern);
     s << QBrush(QColor(0x66, 0x66, 0x66), Qt::Dense1Pattern);
     s << QBrush(QColor(0x99, 0x99, 0x99), Qt::SolidPattern);
     s << QBrush(QColor(0xcc, 0xcc, 0xcc), Qt::CrossPattern);
     s << QBrush(QColor(0xff, 0xff, 0xff), Qt::SolidPattern);
     /*: black-and-white color scheme name */
-    schemes << QPair<QString, QVector<QBrush> >(QObject::tr("Black-and-white"), s);
+    schemes << QPair<QString, QVector<QBrush> >(QObject::tr("Black-and-white scheme"), s);
 
     QSettings settings;
     currentScheme = settings.value("colorScheme", 0).toInt();
@@ -60,9 +60,14 @@ int ColorScheme::getNumSchemes ()
     return schemes.size();
 }
 
+int ColorScheme::getNextColorScheme ()
+{
+    return (currentScheme + 1) % schemes.size();
+}
+
 QString ColorScheme::getSchemeName (int scheme)
 {
-    Q_ASSERT(scheme > 0 && scheme < getNumSchemes());
+    Q_ASSERT(scheme >= 0 && scheme < getNumSchemes());
     return schemes.at(scheme).first;
 }
 

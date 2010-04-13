@@ -29,6 +29,7 @@ public:
         }
 
     static int getNumSchemes ();
+    static int getNextColorScheme ();
     static QString getSchemeName (int scheme);
     const QVector<QBrush> &getScheme (int scheme);
     static QString getSchemeName ();
