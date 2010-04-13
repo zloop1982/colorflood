@@ -19,6 +19,7 @@
 #include <QBrush>
 
 class QPaintEvent;
+class QMouseEvent;
 
 class Field : public QWidget
 {
@@ -41,27 +42,37 @@ public:
 
     typedef QVector<Field::FieldRect> RectVector;
 
-    Field (QWidget *parent);
+    Field (QWidget *parent, int *turns);
     ~Field ();
 
     FieldSize getSize () const;
-    void randomize ();
 
     static int getNumRectsOfSize (FieldSize size);
     static int getNumTurnsOfSize (FieldSize size);
 
 private:
-    static const int rects[NUM_SIZES];
-    static const int turns[NUM_SIZES];
+    static const int numRects[NUM_SIZES];
+    static const int numTurns[NUM_SIZES];
 
-    void init (const QVector<QBrush> &brushes, FieldSize size);
+    void randomize ();
     static int getRectSize (FieldSize size);
+    void tryFloodRecurse (quint8 brush, int x, int y);
+    void floodNeighbours (quint8 brush, int x, int y);
 
     FieldSize  size;
     RectVector data;
+    int        turns;
+    bool       finished;
 
 protected:
+    void mousePressEvent (QMouseEvent *event);
     void paintEvent (QPaintEvent *event);
+
+signals:
+    void turnsChanged (int turns);
+
+public slots:
+    void flood (int colorIndex);
 };
 
 #endif // !_FIELD_HPP

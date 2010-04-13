@@ -17,13 +17,14 @@
 #include <QTime>
 #include <QPainter>
 #include <QPaintEvent>
+#include <QMessageBox>
 #include "field.hpp"
 #include "colorscheme.hpp"
 
 static const int fieldWidth = 420;
 
-const int Field::rects[Field::NUM_SIZES] = { 14, 21, 28 };
-const int Field::turns[Field::NUM_SIZES] = { 25, 35, 50 };
+const int Field::numRects[Field::NUM_SIZES] = { 14, 21, 28 };
+const int Field::numTurns[Field::NUM_SIZES] = { 25, 35, 50 };
 
 // we declare out QVector<FieldRect> metatype
 // and stream operators to save whole field to settings
@@ -59,9 +60,12 @@ static QDataStream &operator>> (QDataStream &in, Field::RectVector &rv)
     return in;
 }
 
-Field::Field (QWidget *parent)
-    : QWidget (parent)
+Field::Field (QWidget *parent, int *turns)
+    : QWidget (parent),
+      finished(false)
 {
+    Q_ASSERT(parent);
+
     setFixedSize(fieldWidth, fieldWidth);
 
     // restore field size and field itself from settings
@@ -71,7 +75,7 @@ Field::Field (QWidget *parent)
 
     QSettings settings;
 
-    int size = settings.value("field/fieldSize", SIZE_SMALL).toInt();
+    int size = settings.value("field/size", SIZE_SMALL).toInt();
 
     if (size < SIZE_SMALL || size >= NUM_SIZES)
         size = SIZE_SMALL;
@@ -81,19 +85,28 @@ Field::Field (QWidget *parent)
     if (settings.contains("field/data"))
         data = settings.value("field/data").value<RectVector>();
 
-    if (data.size() != rects[size] * rects[size])
+    this->turns = settings.value("field/turns", 0).toInt();
+
+    if (data.size() != numRects[size] * numRects[size])
         randomize();
+
+    *turns = this->turns;
 }
 
 Field::~Field ()
 {
-    QSettings settings;
+    if (!finished)
+    {
+        QSettings settings;
 
-    settings.setValue("field/size", size);
+        settings.setValue("field/size", size);
 
-    QVariant v;
-    v.setValue(data);
-    settings.setValue("field/data", v);
+        QVariant v;
+        v.setValue(data);
+        settings.setValue("field/data", v);
+
+        settings.setValue("field/turns", turns);
+    }
 }
 
 Field::FieldSize Field::getSize () const
@@ -107,7 +120,7 @@ void Field::randomize ()
     rect.flood = false;
 
     data.clear();
-    data = RectVector(rects[size] * rects[size], rect);
+    data = RectVector(numRects[size] * numRects[size], rect);
 
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
 
@@ -120,22 +133,66 @@ void Field::randomize ()
         (*rect).brush = qrand() % numBrushes;
     }
 
+    turns = 0;
+    finished = false;
+    emit turnsChanged(turns);
+
+    // flood from top-left
+    data[0].flood = true;
+    floodNeighbours(data[0].brush, 0, 0);
+
     update();
 }
 
 int Field::getNumRectsOfSize (FieldSize size)
 {
-    return rects[size];
+    return numRects[size];
 }
 
 int Field::getNumTurnsOfSize (FieldSize size)
 {
-    return turns[size];
+    return numTurns[size];
 }
 
 int Field::getRectSize (FieldSize size)
 {
-    return fieldWidth / rects[size];
+    return fieldWidth / numRects[size];
+}
+
+void Field::tryFloodRecurse (quint8 brush, int x, int y)
+{
+    FieldRect &rect = data[x + y*numRects[size]];
+
+    if (!rect.flood && rect.brush == brush)
+    {
+        rect.flood = true;
+        floodNeighbours(brush, x, y);
+    }
+}
+
+void Field::floodNeighbours (quint8 brush, int x, int y)
+{
+    int s = numRects[size];
+
+    data[x + y*s].brush = brush;
+
+    if (x > 0)
+        tryFloodRecurse(brush, x - 1, y);
+
+    if (y > 0)
+        tryFloodRecurse(brush, x, y - 1);
+
+    if (x < s - 1)
+        tryFloodRecurse(brush, x + 1, y);
+        
+    if (y < s - 1)
+        tryFloodRecurse(brush, x, y + 1);
+}
+
+void Field::mousePressEvent (QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+        randomize();
 }
 
 void Field::paintEvent (QPaintEvent *event)
@@ -147,11 +204,11 @@ void Field::paintEvent (QPaintEvent *event)
 
     const QVector<QBrush> &scheme = ColorScheme::instance().getScheme();
 
-    for (int y = 0; y < rects[size] ;y++)
+    for (int y = 0; y < numRects[size] ;y++)
     {
-        int n = y * rects[size];
+        int n = y * numRects[size];
 
-        for (int x = 0; x < rects[size] ;x++, n++)
+        for (int x = 0; x < numRects[size] ;x++, n++)
         {
             rect.moveTo(x * rect.width(), y * rect.height());
 
@@ -161,4 +218,61 @@ void Field::paintEvent (QPaintEvent *event)
     }
 
     painter.end();
+}
+
+void Field::flood (int colorIndex)
+{
+    // don't fill with the same color over and over again
+    if (colorIndex == data[0].brush)
+        return;
+
+    if (finished)
+        return;
+
+    emit turnsChanged(++turns);
+
+    // flood with new color
+    for (int y = 0; y < numRects[size] ;y++)
+    {
+        int n = y * numRects[size];
+
+        for (int x = 0; x < numRects[size] ;x++, n++)
+        {
+            if (data[n].flood)
+                floodNeighbours(colorIndex, x, y);
+        }
+    }
+
+    update();
+
+    bool allFlooded = true;
+
+    // check if all field flooded
+    for (QVector<Field::FieldRect>::const_iterator rect = data.begin();
+         rect != data.end();
+         rect++)
+    {
+        if (!(*rect).flood)
+        {
+            allFlooded = false;
+            break;
+        }
+    }
+
+    if (allFlooded)
+    {
+        finished = true;
+
+        QMessageBox box;
+        box.setText(tr("You won!"));
+        box.exec();
+    }
+    else if (getNumTurnsOfSize(size) == turns)
+    {
+        finished = true;
+
+        QMessageBox box;
+        box.setText(tr("You lost!"));
+        box.exec();
+    }
 }
