@@ -15,6 +15,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QSettings>
 #include "window.hpp"
 #include "colorbuttons.hpp"
 #include "field.hpp"
@@ -25,12 +26,6 @@ Window::Window ()
 {
     setWindowTitle("Color Flood");
     setWindowIcon(QIcon(":/images/icon_48x48.png"));
-
-#if defined(Q_WS_HILDON) || defined(Q_WS_MAEMO_5)
-    setWindowState(windowState() | Qt::WindowFullScreen);
-#else
-    setFixedSize(800, 480);
-#endif
 
     //new FullScreenExitButton(this);
 
@@ -53,11 +48,22 @@ Window::Window ()
 
     updateTurns(turns);
 
+    QHBoxLayout *secondary = new QHBoxLayout;
+    QPushButton *toggleFS = new QPushButton(QIcon("/usr/share/icons/hicolor/64x64/hildon/general_fullsize.png"), tr("Toggle fullscreen"), this);
+    QObject::connect(toggleFS, SIGNAL(pressed()), this, SLOT(toggleFullscreen()));
+    QPushButton *newGame = new QPushButton(tr("New game"), this);
+    QObject::connect(newGame, SIGNAL(pressed()), field, SLOT(randomize()));
+
+    secondary->addWidget(newGame);
+    secondary->addWidget(toggleFS);
+
     QVBoxLayout *vl = new QVBoxLayout;
     vl->addWidget(colorButtons);
     vl->setAlignment(colorButtons, Qt::AlignRight | Qt::AlignTop);
     vl->addWidget(turnsLabel);
     vl->setAlignment(turnsLabel, Qt::AlignRight | Qt::AlignTop);
+    vl->addLayout(secondary);
+    vl->setAlignment(secondary, Qt::AlignRight | Qt::AlignBottom);
 
     QHBoxLayout *hl = new QHBoxLayout;
     hl->addWidget(field);
@@ -65,6 +71,11 @@ Window::Window ()
     hl->addLayout(vl);
 
     setLayout(hl);
+
+    QSettings settings;
+
+    if (settings.value("fullscreen", true).toBool())
+        showFullScreen();
 }
 
 void Window::updateTurns (int turns)
@@ -73,4 +84,17 @@ void Window::updateTurns (int turns)
     turnsLabel->setText(tr("<font size=\"24\">Turns: %1/%2</font>")
                         .arg(turns)
                         .arg(field->getNumTurnsOfSize(field->getSize())));
+}
+
+void Window::toggleFullscreen ()
+{
+    bool isFullscreen = windowState() & Qt::WindowFullScreen;
+
+    QSettings settings;
+    settings.setValue("fullscreen", !isFullscreen);
+
+    if (isFullscreen)
+        showNormal();
+    else
+        showFullScreen();
 }

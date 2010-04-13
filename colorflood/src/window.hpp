@@ -29,6 +29,7 @@ public:
 
 private slots:
     void updateTurns (int turns);
+    void toggleFullscreen ();
 
 private:
     ColorButtons *colorButtons;

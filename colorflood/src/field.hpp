@@ -54,7 +54,6 @@ private:
     static const int numRects[NUM_SIZES];
     static const int numTurns[NUM_SIZES];
 
-    void randomize ();
     static int getRectSize (FieldSize size);
     void tryFloodRecurse (quint8 brush, int x, int y);
     void floodNeighbours (quint8 brush, int x, int y);
@@ -65,13 +64,13 @@ private:
     bool       finished;
 
 protected:
-    void mousePressEvent (QMouseEvent *event);
     void paintEvent (QPaintEvent *event);
 
 signals:
     void turnsChanged (int turns);
 
 public slots:
+    void randomize ();
     void flood (int colorIndex);
 };
 

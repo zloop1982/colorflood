@@ -189,12 +189,6 @@ void Field::floodNeighbours (quint8 brush, int x, int y)
         tryFloodRecurse(brush, x, y + 1);
 }
 
-void Field::mousePressEvent (QMouseEvent *event)
-{
-    if (event->button() == Qt::LeftButton)
-        randomize();
-}
-
 void Field::paintEvent (QPaintEvent *event)
 {
     QPainter painter;
