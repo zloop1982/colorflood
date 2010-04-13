@@ -107,7 +107,7 @@ Window::Window ()
 void Window::updateTurns (int turns)
 {
     /*: number of turns */
-    turnsLabel->setText(tr("<font size=\"12\">Turns: %1/%2</font>")
+    turnsLabel->setText(tr("Turns: %1/%2")
                         .arg(turns)
                         .arg(field->getNumTurnsOfSize(field->getSize())));
 }

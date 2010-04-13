@@ -51,16 +51,15 @@
         <translation type="unfinished">Меньше клеток</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="96"/>
+        <location filename="window.cpp" line="91"/>
         <source>More cells</source>
         <translation type="unfinished">Больше клеток</translation>
     </message>
     <message>
         <location filename="window.cpp" line="110"/>
-        <source>&lt;font size=&quot;12&quot;&gt;Turns: %1/%2&lt;/font&gt;</source>
-        <oldsource>&lt;font size=&quot;16&quot;&gt;Turns: %1/%2&lt;/font&gt;</oldsource>
+        <source>Turns: %1/%2</source>
         <extracomment>number of turns</extracomment>
-        <translation type="unfinished">&lt;font size=&quot;12&quot;&gt;Шагов: %1/%2&lt;/font&gt;</translation>
+        <translation type="unfinished">Шагов: %1/%2</translation>
     </message>
 </context>
 </TS>
