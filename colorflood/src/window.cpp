@@ -18,7 +18,7 @@
 #include "window.hpp"
 #include "colorbuttons.hpp"
 #include "field.hpp"
-#include "fullscreenexitbutton.hpp"
+//#include "fullscreenexitbutton.hpp"
 
 Window::Window ()
     : QWidget()
