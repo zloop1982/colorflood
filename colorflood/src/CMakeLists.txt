@@ -23,7 +23,7 @@ set(moc
   colorbutton.hpp
   colorbuttons.hpp
   field.hpp
-  #fullscreenexitbutton.hpp
+  fullscreenexitbutton.hpp
   window.hpp
   )
 

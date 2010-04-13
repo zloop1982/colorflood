@@ -19,7 +19,7 @@
 #include "window.hpp"
 #include "colorbuttons.hpp"
 #include "field.hpp"
-//#include "fullscreenexitbutton.hpp"
+#include "fullscreenexitbutton.hpp"
 
 Window::Window ()
     : QWidget()
@@ -27,7 +27,7 @@ Window::Window ()
     setWindowTitle("Color Flood");
     setWindowIcon(QIcon(":/images/icon_48x48.png"));
 
-    //new FullScreenExitButton(this);
+    new FullScreenExitButton(this);
 
     int turns;
     field = new Field(this, &turns);
@@ -49,7 +49,7 @@ Window::Window ()
     updateTurns(turns);
 
     QHBoxLayout *secondary = new QHBoxLayout;
-    QPushButton *toggleFS = new QPushButton(QIcon("/usr/share/icons/hicolor/64x64/hildon/general_fullsize.png"), tr("Toggle fullscreen"), this);
+    QPushButton *toggleFS = new QPushButton(QPixmap("/usr/share/icons/hicolor/64x64/hildon/general_fullsize"), tr("Toggle fullscreen"), this);
     QObject::connect(toggleFS, SIGNAL(pressed()), this, SLOT(toggleFullscreen()));
     QPushButton *newGame = new QPushButton(tr("New game"), this);
     QObject::connect(newGame, SIGNAL(pressed()), field, SLOT(randomize()));
@@ -81,7 +81,7 @@ Window::Window ()
 void Window::updateTurns (int turns)
 {
     /*: number of turns */
-    turnsLabel->setText(tr("<font size=\"24\">Turns: %1/%2</font>")
+    turnsLabel->setText(tr("<font size=\"16\">Turns: %1/%2</font>")
                         .arg(turns)
                         .arg(field->getNumTurnsOfSize(field->getSize())));
 }
