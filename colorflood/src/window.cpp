@@ -12,31 +12,58 @@
 */
 
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QLabel>
 #include "window.hpp"
+#include "colorbuttons.hpp"
 #include "field.hpp"
+#include "fullscreenexitbutton.hpp"
 
 Window::Window ()
     : QWidget()
 {
     setWindowTitle(tr("Color Flood"));
 
-    //setWindowState(windowState() | Qt::WindowFullScreen);
+    setWindowState(windowState() | Qt::WindowFullScreen);
 
-    QPushButton *button = new QPushButton("randomize", this);
-    field = new Field(this);
+    new FullScreenExitButton(this);
 
-    QObject::connect(button, SIGNAL(pressed()), this, SLOT(randomize()));
+    int turns;
+    field = new Field(this, &turns);
+    colorButtons = new ColorButtons(this);
 
-    QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(button);
-    layout->setAlignment(button, Qt::AlignLeft);
-    layout->addWidget(field);
-    layout->setAlignment(field, Qt::AlignRight);
-    setLayout(layout);
+    QObject::connect(colorButtons,
+                     SIGNAL(flood(int)),
+                     field,
+                     SLOT(flood(int)));
+
+    turnsLabel = new QLabel(this);
+
+    QObject::connect(field,
+                     SIGNAL(turnsChanged(int)),
+                     this,
+                     SLOT(updateTurns(int)));
+
+    updateTurns(turns);
+
+    QVBoxLayout *vl = new QVBoxLayout;
+    vl->addWidget(turnsLabel);
+    vl->setAlignment(turnsLabel, Qt::AlignTop);
+
+    QHBoxLayout *hl = new QHBoxLayout;
+    hl->addWidget(colorButtons);
+    hl->setAlignment(colorButtons, Qt::AlignLeft);
+    hl->addWidget(field);
+    hl->setAlignment(field, Qt::AlignRight);
+
+    vl->addLayout(hl);
+    setLayout(vl);
 }
 
-void Window::randomize ()
+void Window::updateTurns (int turns)
 {
-    field->randomize();
+    turnsLabel->setText(QString("%1/%2")
+                        .arg(turns)
+                        .arg(field->getNumTurnsOfSize(field->getSize())));
 }

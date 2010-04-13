@@ -10,14 +10,17 @@
 # GNU General Public License for more details.
 
 set(src
+  colorbuttons.cpp
+  colorscheme.cpp
   field.cpp
   main.cpp
   window.cpp
-  colorscheme.cpp
   )
 
 set(moc
+  colorbuttons.hpp
   field.hpp
+  fullscreenexitbutton.hpp
   window.hpp
   )
 

@@ -16,7 +16,9 @@
 
 #include <QWidget>
 
+class ColorButtons;
 class Field;
+class QLabel;
 
 class Window : public QWidget
 {
@@ -25,11 +27,13 @@ class Window : public QWidget
 public:
     Window ();
 
-public slots:
-    void randomize ();
+private slots:
+    void updateTurns (int turns);
 
 private:
+    ColorButtons *colorButtons;
     Field *field;
+    QLabel *turnsLabel;
 };
 
 #endif // !_WINDOW_HPP
