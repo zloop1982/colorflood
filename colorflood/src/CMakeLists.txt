@@ -15,6 +15,7 @@ set(src
   field.cpp
   main.cpp
   window.cpp
+  qrc_colorflood.cxx
   )
 
 set(moc
@@ -28,8 +29,10 @@ include(FindQt4)
 find_package(Qt4 4.6.2 COMPONENTS QtCore QtGui REQUIRED)
 include(${QT_USE_FILE})
 
-QT4_WRAP_CPP(moc_src ${moc})
+qt4_wrap_cpp(moc_src ${moc})
+qt4_add_translation(colorflood.ts)
+qt4_add_resources(resources colorflood.qrc)
 
 add_definitions(-Wall -Wextra)
-add_executable(colorflood ${moc_src} ${src})
+add_executable(colorflood ${moc_src} ${src} ${res})
 target_link_libraries(colorflood ${QT_LIBRARIES})
