@@ -59,7 +59,7 @@
         <location filename="window.cpp" line="110"/>
         <source>Turns: %1/%2</source>
         <extracomment>number of turns</extracomment>
-        <translation type="unfinished">Шагов: %1/%2</translation>
+        <translation type="unfinished">Ходов: %1/%2</translation>
     </message>
 </context>
 </TS>
