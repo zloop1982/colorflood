@@ -12,6 +12,8 @@
 */
 
 #include <QApplication>
+#include <QLocale>
+#include <QTranslator>
 #include "window.hpp"
 
 /*
@@ -25,6 +27,13 @@ int main (int argc, char **argv)
 
     QCoreApplication::setOrganizationName("ftrvxmtrx");
     QCoreApplication::setApplicationName("Color Flood");
+
+    QTranslator translator;
+
+    if (QLocale::Russian == QLocale::system().language())
+        translator.load(":/colorflood.qm");
+
+    app.installTranslator(&translator);
 
     Window window;
     window.show();

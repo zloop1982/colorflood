@@ -264,6 +264,7 @@ void Field::flood (int colorIndex)
         finished = true;
 
         QMessageBox box;
+        /*: win message */
         box.setText(tr("You won!"));
         box.exec();
     }
@@ -272,6 +273,7 @@ void Field::flood (int colorIndex)
         finished = true;
 
         QMessageBox box;
+        /*: fail message */
         box.setText(tr("You lost!"));
         box.exec();
     }

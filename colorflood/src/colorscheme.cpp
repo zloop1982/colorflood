@@ -29,6 +29,7 @@ ColorScheme::ColorScheme ()
     s << QColor(0xff, 0xff, 0x00); // yellow
     s << QColor(0xff, 0x00, 0xff); // magenta
     s << QColor(0x80, 0x00, 0x80); // purple
+    /*: default color scheme name */
     schemes << QPair<QString, QVector<QBrush> >(QObject::tr("Default"), s);
 
     s.clear();
@@ -38,6 +39,7 @@ ColorScheme::ColorScheme ()
     s << QBrush(QColor(0x99, 0x99, 0x99), Qt::SolidPattern);
     s << QBrush(QColor(0xcc, 0xcc, 0xcc), Qt::CrossPattern);
     s << QBrush(QColor(0xff, 0xff, 0xff), Qt::SolidPattern);
+    /*: black-and-white color scheme name */
     schemes << QPair<QString, QVector<QBrush> >(QObject::tr("Black-and-white"), s);
 
     QSettings settings;

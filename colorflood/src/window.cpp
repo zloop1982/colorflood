@@ -23,7 +23,7 @@
 Window::Window ()
     : QWidget()
 {
-    setWindowTitle(tr("Color Flood"));
+    setWindowTitle("Color Flood");
 
     setWindowState(windowState() | Qt::WindowFullScreen);
 
@@ -63,7 +63,8 @@ Window::Window ()
 
 void Window::updateTurns (int turns)
 {
-    turnsLabel->setText(QString("%1/%2")
+    /*: number of turns */
+    turnsLabel->setText(tr("Turns: %1/%2")
                         .arg(turns)
                         .arg(field->getNumTurnsOfSize(field->getSize())));
 }
