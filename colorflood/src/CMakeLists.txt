@@ -10,6 +10,7 @@
 # GNU General Public License for more details.
 
 set(src
+  colorbutton.cpp
   colorbuttons.cpp
   colorscheme.cpp
   field.cpp
@@ -19,6 +20,7 @@ set(src
   )
 
 set(moc
+  colorbutton.hpp
   colorbuttons.hpp
   field.hpp
   #fullscreenexitbutton.hpp

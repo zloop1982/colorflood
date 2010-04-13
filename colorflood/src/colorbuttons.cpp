@@ -15,9 +15,10 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QPushButton>
-#include <QVBoxLayout>
+#include <QGridLayout>
 #include "colorbuttons.hpp"
 #include "colorscheme.hpp"
+#include "colorbutton.hpp"
 
 ColorButtons::ColorButtons (QWidget *parent)
     : QGroupBox(parent)
@@ -25,19 +26,12 @@ ColorButtons::ColorButtons (QWidget *parent)
     Q_ASSERT(parent);
 
     const QVector<QBrush> &scheme = ColorScheme::instance().getScheme();
-    QVBoxLayout *layout = new QVBoxLayout;
+    QGridLayout *layout = new QGridLayout;
 
     for (int i = 0; i < scheme.size(); i++)
     {
-        QPixmap pixmap(64, 64);
-        QPainter painter;
-        painter.begin(&pixmap);
-        painter.fillRect(pixmap.rect(), scheme.at(i));
-        painter.end();
-
-        QPushButton *button = new QPushButton(pixmap, "", this);
-        button->setFixedSize(48, 48);
-        layout->addWidget(button);
+        ColorButton *button = new ColorButton(this, i);
+        layout->addWidget(button, (i - (i % 3)) / 3, i % 3);
         group.addButton(button, i);
     }
 
