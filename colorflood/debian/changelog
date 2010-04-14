@@ -1,3 +1,11 @@
+colorflood (0.2-1) unstable; urgency=low
+
+  * Help button
+  * Warning fixed (in field.cpp)
+  * Proper title for message boxes
+
+ -- Serge Ziryukin <ftrvxmtrx@gmail.com>  Wed, 14 Apr 2010 22:05:49 +0300
+
 colorflood (0.1-1) unstable; urgency=low
 
   * Initial release
