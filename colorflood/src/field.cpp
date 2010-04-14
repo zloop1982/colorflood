@@ -282,6 +282,7 @@ void Field::flood (int colorIndex)
     if (finished)
     {
         QMessageBox box;
+        box.setWindowTitle("Color Flood");
         box.setText(msg);
         box.exec();
         randomize();
