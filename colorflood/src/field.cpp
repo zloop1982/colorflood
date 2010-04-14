@@ -128,6 +128,8 @@ void Field::setSize (int size)
 void Field::randomize ()
 {
     FieldRect rect;
+
+    rect.brush = 0;
     rect.flood = false;
 
     data.clear();
