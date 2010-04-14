@@ -34,6 +34,7 @@ private slots:
     void colorScheme ();
     void lessCells ();
     void moreCells ();
+    void help ();
 
 private:
     ColorButtons *colorButtons;

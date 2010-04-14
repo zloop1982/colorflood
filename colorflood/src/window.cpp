@@ -17,6 +17,7 @@
 #include <QLabel>
 #include <QSettings>
 #include <QMenuBar>
+#include <QMessageBox>
 #include "window.hpp"
 #include "colorbuttons.hpp"
 #include "field.hpp"
@@ -51,13 +52,20 @@ Window::Window ()
     QPushButton *newGame = new QPushButton(tr("New game"), this);
     QObject::connect(newGame, SIGNAL(pressed()), field, SLOT(randomize()));
 
+    QPushButton *help = new QPushButton(tr("Help"), this);
+    QObject::connect(help, SIGNAL(pressed()), this, SLOT(help()));
+
+    QHBoxLayout *lowerLayout = new QHBoxLayout;
+    lowerLayout->addWidget(help);
+    lowerLayout->addWidget(newGame);
+
     QVBoxLayout *vl = new QVBoxLayout;
     vl->addWidget(colorButtons);
     vl->setAlignment(colorButtons, Qt::AlignRight | Qt::AlignTop);
     vl->addWidget(turnsLabel);
     vl->setAlignment(turnsLabel, Qt::AlignRight | Qt::AlignBottom);
-    vl->addWidget(newGame);
-    vl->setAlignment(newGame, Qt::AlignRight | Qt::AlignTop);
+    vl->addLayout(lowerLayout);
+    vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignTop);
 
     QHBoxLayout *hl = new QHBoxLayout;
     hl->addWidget(field);
@@ -150,4 +158,12 @@ void Window::colorScheme ()
 
     action->setText(ColorScheme::getSchemeName(
                         ColorScheme::getNextColorScheme()));
+}
+
+void Window::help ()
+{
+        QMessageBox box;
+        box.setWindowTitle("Color Flood");
+        box.setText(tr("The object of the game is to turn a board into one single color. Number of moves is limited. You start from top-left corner with one cell already flooded.\nGood luck!"));
+        box.exec();
 }
