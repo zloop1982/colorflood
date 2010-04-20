@@ -11,18 +11,18 @@
   GNU General Public License for more details.
 */
 
-#ifndef _COLORBUTTONS_HPP
-#define _COLORBUTTONS_HPP
+#ifndef _BUTTONGROUP_HPP
+#define _BUTTONGROUP_HPP
 
 #include <QGroupBox>
 #include <QButtonGroup>
 
-class ColorButtons : public QGroupBox
+class ButtonGroup : public QGroupBox
 {
     Q_OBJECT;
 
 public:
-    ColorButtons (QWidget *parent);
+    ButtonGroup (QWidget *parent);
 
 signals:
     void flood (int colorIndex);
@@ -31,4 +31,4 @@ private:
     QButtonGroup group;
 };
 
-#endif // !_COLORBUTTONS_HPP
+#endif // !_BUTTONGROUP_HPP

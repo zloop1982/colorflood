@@ -19,10 +19,10 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include "window.hpp"
-#include "colorbuttons.hpp"
-#include "field.hpp"
+#include "buttongroup.hpp"
+#include "board.hpp"
 #include "fullscreenexitbutton.hpp"
-#include "colorscheme.hpp"
+#include "scheme.hpp"
 
 Window::Window ()
     : QWidget()
@@ -31,18 +31,18 @@ Window::Window ()
     setWindowIcon(QIcon(":/images/icon_48x48.png"));
 
     int turns;
-    field = new Field(this, &turns);
-    colorButtons = new ColorButtons(this);
+    board = new Board(this, &turns);
+    buttonGroup = new ButtonGroup(this);
 
-    QObject::connect(colorButtons,
+    QObject::connect(buttonGroup,
                      SIGNAL(flood(int)),
-                     field,
+                     board,
                      SLOT(flood(int)));
 
     turnsLabel = new QLabel(this);
     turnsLabel->setAlignment(Qt::AlignRight);
 
-    QObject::connect(field,
+    QObject::connect(board,
                      SIGNAL(turnsChanged(int)),
                      this,
                      SLOT(updateTurns(int)));
@@ -50,7 +50,7 @@ Window::Window ()
     updateTurns(turns);
 
     QPushButton *newGame = new QPushButton(tr("New game"), this);
-    QObject::connect(newGame, SIGNAL(pressed()), field, SLOT(randomize()));
+    QObject::connect(newGame, SIGNAL(pressed()), board, SLOT(randomize()));
 
     QPushButton *help = new QPushButton(tr("Help"), this);
     QObject::connect(help, SIGNAL(pressed()), this, SLOT(help()));
@@ -60,16 +60,16 @@ Window::Window ()
     lowerLayout->addWidget(newGame);
 
     QVBoxLayout *vl = new QVBoxLayout;
-    vl->addWidget(colorButtons);
-    vl->setAlignment(colorButtons, Qt::AlignRight | Qt::AlignTop);
+    vl->addWidget(buttonGroup);
+    vl->setAlignment(buttonGroup, Qt::AlignRight | Qt::AlignTop);
     vl->addWidget(turnsLabel);
     vl->setAlignment(turnsLabel, Qt::AlignRight | Qt::AlignBottom);
     vl->addLayout(lowerLayout);
     vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignTop);
 
     QHBoxLayout *hl = new QHBoxLayout;
-    hl->addWidget(field);
-    hl->setAlignment(field, Qt::AlignLeft);
+    hl->addWidget(board);
+    hl->setAlignment(board, Qt::AlignLeft);
     hl->addLayout(vl);
 
     setLayout(hl);
@@ -83,11 +83,10 @@ Window::Window ()
                      SLOT(fullScreenMode()));
 
     QObject::connect(bar->addAction(
-                         ColorScheme::getSchemeName(
-                             ColorScheme::getNextColorScheme())),
+                         Scheme::getSchemeName(Scheme::getNextScheme())),
                      SIGNAL(triggered()),
                      this,
-                     SLOT(colorScheme()));
+                     SLOT(scheme()));
 
     less = bar->addAction(tr("Less cells"));
 
@@ -103,9 +102,9 @@ Window::Window ()
                      this,
                      SLOT(moreCells()));
 
-    if (!field->getSize())
+    if (!board->getSize())
         less->setEnabled(false);
-    else if (field->getSize() == Field::NUM_SIZES - 1)
+    else if (board->getSize() == Board::NUM_SIZES - 1)
         more->setEnabled(false);
 
     new FullScreenExitButton(this);
@@ -117,7 +116,7 @@ void Window::updateTurns (int turns)
     /*: number of turns */
     turnsLabel->setText(tr("Turns: %1/%2")
                         .arg(turns)
-                        .arg(field->getNumTurnsOfSize(field->getSize())));
+                        .arg(board->getNumTurnsOfSize(board->getSize())));
 }
 
 void Window::fullScreenMode ()
@@ -127,9 +126,9 @@ void Window::fullScreenMode ()
 
 void Window::lessCells ()
 {
-    int s = field->getSize() - 1;
+    int s = board->getSize() - 1;
 
-    field->setSize(s);
+    board->setSize(s);
     more->setEnabled(true);
 
     if (!s)
@@ -138,26 +137,25 @@ void Window::lessCells ()
 
 void Window::moreCells ()
 {
-    int s = field->getSize() + 1;
+    int s = board->getSize() + 1;
 
-    field->setSize(s);
+    board->setSize(s);
     less->setEnabled(true);
 
-    if (s == Field::NUM_SIZES - 1)
+    if (s == Board::NUM_SIZES - 1)
         more->setEnabled(false);
 }
 
-void Window::colorScheme ()
+void Window::scheme ()
 {
     QAction *action = static_cast<typeof(action)>(QObject::sender());
 
-    ColorScheme::setScheme(ColorScheme::getNextColorScheme());
+    Scheme::setScheme(Scheme::getNextScheme());
 
-    field->update();
-    colorButtons->update();
+    board->update();
+    buttonGroup->update();
 
-    action->setText(ColorScheme::getSchemeName(
-                        ColorScheme::getNextColorScheme()));
+    action->setText(Scheme::getSchemeName(Scheme::getNextScheme()));
 }
 
 void Window::help ()

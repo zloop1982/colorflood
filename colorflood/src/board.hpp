@@ -11,8 +11,8 @@
   GNU General Public License for more details.
 */
 
-#ifndef _FIELD_HPP
-#define _FIELD_HPP
+#ifndef _BOARD_HPP
+#define _BOARD_HPP
 
 #include <QWidget>
 #include <QVector>
@@ -21,7 +21,7 @@
 class QPaintEvent;
 class QMouseEvent;
 
-class Field : public QWidget
+class Board : public QWidget
 {
     Q_OBJECT;
 
@@ -32,35 +32,35 @@ public:
         SIZE_NORMAL,
         SIZE_LARGE,
         NUM_SIZES
-    }FieldSize;
+    }BoardSize;
 
     typedef struct
     {
         quint8 brush;
         bool   flood;
-    }FieldRect;
+    }Cell;
 
-    typedef QVector<Field::FieldRect> RectVector;
+    typedef QVector<Board::Cell> CellVector;
 
-    Field (QWidget *parent, int *turns);
-    ~Field ();
+    Board (QWidget *parent, int *turns);
+    ~Board ();
 
-    FieldSize getSize () const;
+    BoardSize getSize () const;
     void setSize (int size);
 
-    static int getNumRectsOfSize (FieldSize size);
-    static int getNumTurnsOfSize (FieldSize size);
+    static int getWidthInCells (BoardSize size);
+    static int getNumTurnsOfSize (BoardSize size);
 
 private:
-    static const int numRects[NUM_SIZES];
-    static const int numTurns[NUM_SIZES];
+    static const int boardWidthInCells[NUM_SIZES];
+    static const int turnsForSize[NUM_SIZES];
 
-    static int getRectSize (FieldSize size);
+    static int getCellSize (BoardSize size);
     void tryFloodRecurse (quint8 brush, int x, int y);
     void floodNeighbours (quint8 brush, int x, int y);
 
-    FieldSize  size;
-    RectVector data;
+    BoardSize  size;
+    CellVector cells;
     int        turns;
     bool       finished;
 
@@ -72,7 +72,7 @@ signals:
 
 public slots:
     void randomize ();
-    void flood (int colorIndex);
+    void flood (int brushIndex);
 };
 
-#endif // !_FIELD_HPP
+#endif // !_BOARD_HPP

@@ -11,25 +11,25 @@
   GNU General Public License for more details.
 */
 
-#ifndef _COLORSCHEME_HPP
-#define _COLORSCHEME_HPP
+#ifndef _SCHEME_HPP
+#define _SCHEME_HPP
 
 #include <QVector>
 #include <QPair>
 #include <QBrush>
 #include <QString>
 
-class ColorScheme
+class Scheme
 {
 public:
-    static ColorScheme & instance ()
+    static Scheme & instance ()
         {
-            static ColorScheme instance;
+            static Scheme instance;
             return instance;
         }
 
     static int getNumSchemes ();
-    static int getNextColorScheme ();
+    static int getNextScheme ();
     static QString getSchemeName (int scheme);
     const QVector<QBrush> &getScheme (int scheme);
     static QString getSchemeName ();
@@ -37,10 +37,10 @@ public:
     static void setScheme (int scheme);
 
 private:
-    ColorScheme ();
-    ~ColorScheme ();
-    ColorScheme (const ColorScheme &);
-    ColorScheme & operator= (const ColorScheme &);
+    Scheme ();
+    ~Scheme ();
+    Scheme (const Scheme &);
+    Scheme & operator= (const Scheme &);
 };
 
-#endif /* !_COLORSCHEME_HPP */
+#endif // !_SCHEME_HPP

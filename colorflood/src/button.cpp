@@ -11,23 +11,24 @@
   GNU General Public License for more details.
 */
 
-#ifndef _COLORBUTTON_HPP
-#define _COLORBUTTON_HPP
+#include <QPainter>
+#include "button.hpp"
+#include "scheme.hpp"
 
-#include <QPushButton>
-
-class ColorButton : public QPushButton
+Button::Button (QWidget *parent, int brush)
+    : QPushButton(parent),
+      brush(brush)
 {
-    Q_OBJECT;
+    setFixedSize(64, 64);
+}
 
-public:
-    ColorButton (QWidget *parent, int brush);
+void Button::paintEvent (QPaintEvent * /* event */)
+{
+    QPainter painter;
+    painter.begin(this);
 
-private:
-    const int brush;
+    const QVector<QBrush> &scheme = Scheme::instance().getScheme();
+    painter.fillRect(0, 0, 64, 64, scheme.at(brush));
 
-protected:
-    void paintEvent (QPaintEvent *event);
-};
-
-#endif // !_COLORBUTTON_HPP
+    painter.end();
+}

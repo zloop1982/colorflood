@@ -16,21 +16,21 @@
 #include <QPixmap>
 #include <QPushButton>
 #include <QGridLayout>
-#include "colorbuttons.hpp"
-#include "colorscheme.hpp"
-#include "colorbutton.hpp"
+#include "buttongroup.hpp"
+#include "scheme.hpp"
+#include "button.hpp"
 
-ColorButtons::ColorButtons (QWidget *parent)
+ButtonGroup::ButtonGroup (QWidget *parent)
     : QGroupBox(parent)
 {
     Q_ASSERT(parent);
 
-    const QVector<QBrush> &scheme = ColorScheme::instance().getScheme();
+    const QVector<QBrush> &scheme = Scheme::instance().getScheme();
     QGridLayout *layout = new QGridLayout;
 
     for (int i = 0; i < scheme.size(); i++)
     {
-        ColorButton *button = new ColorButton(this, i);
+        Button *button = new Button(this, i);
         layout->addWidget(button, (i - (i % 3)) / 3, i % 3);
         group.addButton(button, i);
     }

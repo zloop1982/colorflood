@@ -16,8 +16,8 @@
 
 #include <QWidget>
 
-class ColorButtons;
-class Field;
+class ButtonGroup;
+class Board;
 class QLabel;
 class QAction;
 
@@ -31,14 +31,14 @@ public:
 private slots:
     void updateTurns (int turns);
     void fullScreenMode ();
-    void colorScheme ();
+    void scheme ();
     void lessCells ();
     void moreCells ();
     void help ();
 
 private:
-    ColorButtons *colorButtons;
-    Field *field;
+    ButtonGroup *buttonGroup;
+    Board *board;
     QLabel *turnsLabel;
     QAction *less;
     QAction *more;

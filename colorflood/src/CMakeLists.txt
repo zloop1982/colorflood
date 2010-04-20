@@ -10,19 +10,19 @@
 # GNU General Public License for more details.
 
 set(src
-  colorbutton.cpp
-  colorbuttons.cpp
-  colorscheme.cpp
-  field.cpp
+  board.cpp
+  button.cpp
+  buttongroup.cpp
   main.cpp
-  window.cpp
+  scheme.cpp
   qrc_colorflood.cxx
+  window.cpp
   )
 
 set(moc
-  colorbutton.hpp
-  colorbuttons.hpp
-  field.hpp
+  board.hpp
+  button.hpp
+  buttongroup.hpp
   fullscreenexitbutton.hpp
   window.hpp
   )
