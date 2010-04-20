@@ -276,7 +276,9 @@ void Board::flood (int brushIndex)
     {
         finished = true;
         /*: win message */
-        msg = tr("You won!");
+        msg = (tr("You won!\nYou used %1 turns out of %2.")
+               .arg(turns)
+               .arg(getNumTurnsOfSize(size)));
     }
     else if (getNumTurnsOfSize(size) == turns)
     {
