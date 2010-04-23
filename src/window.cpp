@@ -78,7 +78,7 @@ Window::Window ()
 
     setLayout(hl);
 
-    /* menu bar */
+    // menu bar
     QMenuBar *bar = new QMenuBar(this);
 
     QObject::connect(bar->addAction(tr("Fullscreen mode")),

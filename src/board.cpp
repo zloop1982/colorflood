@@ -25,6 +25,7 @@
 #include "board.hpp"
 #include "scheme.hpp"
 
+/// board dimensions in pixels
 static const int boardWidthInPixels = 420;
 
 const int Board::boardWidthInCells[Board::NUM_SIZES] = { 14, 21, 28 };

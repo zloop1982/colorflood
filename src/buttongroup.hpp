@@ -21,6 +21,7 @@
 #include <QGroupBox>
 #include <QButtonGroup>
 
+/// button group widget class
 class ButtonGroup : public QGroupBox
 {
     Q_OBJECT;
@@ -29,7 +30,8 @@ public:
     ButtonGroup (QWidget *parent);
 
 signals:
-    void flood (int colorIndex);
+    /// flood with specific brush
+    void flood (int brushIndex);
 
 private:
     QButtonGroup group;

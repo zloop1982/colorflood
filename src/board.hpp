@@ -25,23 +25,26 @@
 class QPaintEvent;
 class QMouseEvent;
 
+/// board class
 class Board : public QWidget
 {
     Q_OBJECT;
 
 public:
+    /// board sizes
     typedef enum
     {
-        SIZE_SMALL = 0,
-        SIZE_NORMAL,
-        SIZE_LARGE,
+        SIZE_SMALL = 0, ///< 14x14, 25 turns
+        SIZE_NORMAL,    ///< 21x21, 35 turns
+        SIZE_LARGE,     ///< 28x28, 50 turns
         NUM_SIZES
     }BoardSize;
 
+    /// cell type
     typedef struct
     {
-        quint8 brush;
-        bool   flood;
+        quint8 brush; ///< brush index
+        bool   flood; ///< 'cell filled' flag
     }Cell;
 
     typedef QVector<Board::Cell> CellVector;
@@ -49,24 +52,31 @@ public:
     Board (QWidget *parent, int *turns);
     ~Board ();
 
+    /// get board size
     BoardSize getSize () const;
+    /// set new board size and randomize cells
     void setSize (int size);
 
     static int getWidthInCells (BoardSize size);
     static int getNumTurnsOfSize (BoardSize size);
 
 private:
+    /// number of cells for specific board size
     static const int boardWidthInCells[NUM_SIZES];
+    /// number of turns for specific board size
     static const int turnsForSize[NUM_SIZES];
 
+    /// get cell size in pixels for specific board size
     static int getCellSize (BoardSize size);
+    /// flood recursively if a cell isn't filled yet
     void tryFloodRecurse (quint8 brush, int x, int y);
+    /// flood neighbouring cells
     void floodNeighbours (quint8 brush, int x, int y);
 
-    BoardSize  size;
-    CellVector cells;
-    int        turns;
-    bool       finished;
+    BoardSize  size;     ///< board size
+    CellVector cells;    ///< cells data
+    int        turns;    ///< number of turns used
+    bool       finished; ///< 'game finished' flag
 
 protected:
     void paintEvent (QPaintEvent *event);
@@ -75,7 +85,9 @@ signals:
     void turnsChanged (int turns);
 
 public slots:
+    /// randomize cells
     void randomize ();
+    /// flood with specific brush
     void flood (int brushIndex);
 };
 

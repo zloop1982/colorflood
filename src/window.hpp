@@ -25,6 +25,7 @@ class Board;
 class QLabel;
 class QAction;
 
+/// main window class
 class Window : public QWidget
 {
     Q_OBJECT;
@@ -33,11 +34,17 @@ public:
     Window ();
 
 private slots:
+    /// update number of turns
     void updateTurns (int turns);
+    /// toggle fullscreen mode
     void fullScreenMode ();
+    /// switch to next scheme
     void scheme ();
+    /// less cells
     void lessCells ();
+    /// more cells
     void moreCells ();
+    /// show help
     void help ();
 
 private:

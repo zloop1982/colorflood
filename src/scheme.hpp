@@ -23,21 +23,29 @@
 #include <QBrush>
 #include <QString>
 
+/// scheme singleton class
 class Scheme
 {
 public:
-    static Scheme & instance ()
+    static Scheme &instance ()
         {
             static Scheme instance;
             return instance;
         }
 
+    /// get number of predefined schemes
     static int getNumSchemes ();
+    /// get next scheme index (it goes to 0 after last index)
     static int getNextScheme ();
+    /// get scheme name
     static QString getSchemeName (int scheme);
+    /// get scheme brushes
     const QVector<QBrush> &getScheme (int scheme);
+    /// get current scheme name
     static QString getSchemeName ();
+    /// get current scheme brushes
     const QVector<QBrush> &getScheme ();
+    /// set current scheme by its index
     static void setScheme (int scheme);
 
 private:

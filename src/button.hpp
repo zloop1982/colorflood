@@ -20,15 +20,17 @@
 
 #include <QPushButton>
 
+/// brush button class
 class Button : public QPushButton
 {
     Q_OBJECT;
 
 public:
-    Button (QWidget *parent, int brush);
+    Button (QWidget *parent, int brushIndex);
 
 private:
-    const int brush;
+    /// brush index
+    const int brushIndex;
 
 protected:
     void paintEvent (QPaintEvent *event);
