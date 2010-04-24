@@ -34,7 +34,7 @@ int main (int argc, char **argv)
 
     QTranslator translator;
 
-    translator.load(":/tr/" + QLocale::system().name() + ".qm");
+    translator.load(":/tr/" + QLocale::system().name());
     app.installTranslator(&translator);
 
     Window window;
