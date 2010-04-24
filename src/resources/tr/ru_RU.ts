@@ -43,22 +43,17 @@ You used %1 turns out of %2.</source>
         <translation type="unfinished">Новая игра</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="67"/>
+        <location filename="../../window.cpp" line="96"/>
         <source>Help</source>
         <translation type="unfinished">Помощь</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="95"/>
-        <source>Fullscreen mode</source>
-        <translation type="unfinished">Полноэкранный режим</translation>
-    </message>
-    <message>
-        <location filename="../../window.cpp" line="106"/>
+        <location filename="../../window.cpp" line="107"/>
         <source>Less cells</source>
         <translation type="unfinished">Меньше клеток</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="113"/>
+        <location filename="../../window.cpp" line="114"/>
         <source>More cells</source>
         <translation type="unfinished">Больше клеток</translation>
     </message>
@@ -69,14 +64,14 @@ You used %1 turns out of %2.</source>
         <translation type="unfinished">Ходов: %1/%2</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="186"/>
+        <location filename="../../window.cpp" line="181"/>
         <source>The object of the game is to turn a board into one single color. Number of moves is limited. You start from top-left corner with one cell already flooded.
 Good luck!</source>
         <translation type="unfinished">Цель игры - залить поле одним цветом. Количество ходов ограничено. Вы начинаете с верхнего левого угла с одной клеткой, которая уже залита.
 Удачи!</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="209"/>
+        <location filename="../../window.cpp" line="207"/>
         <source>Best record: %1/%2</source>
         <extracomment>best number of turns</extracomment>
         <translation type="unfinished">Рекорд: %1/%2</translation>
