@@ -191,8 +191,11 @@ void Window::updateBestResult (int newBestResult)
 
     if (newBestResult)
     {
-        bestResult = newBestResult;
-        settings.setValue(property, bestResult);
+        if (bestResult > newBestResult)
+        {
+            bestResult = newBestResult;
+            settings.setValue(property, bestResult);
+        }
     }
     else
     {
