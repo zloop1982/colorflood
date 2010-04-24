@@ -176,15 +176,15 @@ void Window::scheme ()
 
 void Window::help ()
 {
-        QMessageBox box;
-        box.setWindowTitle("Color Flood");
-        box.setText(tr("The object of the game is to turn a board into one single color. Number of moves is limited. You start from top-left corner with one cell already flooded.\nGood luck!"));
-        box.exec();
+    QMessageBox box;
+    box.setWindowTitle("Color Flood");
+    box.setText(tr("The object of the game is to turn a board into one single color. Number of moves is limited. You start from top-left corner with one cell already flooded.\nGood luck!"));
+    box.exec();
 }
 
 void Window::updateBestResult (int newMinTurnsUsedToWin)
 {
-     QSettings settings;
+    QSettings settings;
 
     Board::BoardSize size = board->getSize();
     QString property = QString("stats/minTurnsUsedToWin%1").arg(size);
