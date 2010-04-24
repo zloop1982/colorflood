@@ -36,7 +36,7 @@ find_package(Qt4 4.6.2 COMPONENTS QtCore QtGui REQUIRED)
 include(${QT_USE_FILE})
 
 qt4_wrap_cpp(moc_src ${moc})
-qt4_add_translation(resources/colorflood.ts)
+qt4_add_translation(resources/tr/ru_RU.ts)
 qt4_add_resources(resources resources/colorflood.qrc)
 
 add_definitions(-Wall -Wextra)

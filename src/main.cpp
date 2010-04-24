@@ -34,9 +34,7 @@ int main (int argc, char **argv)
 
     QTranslator translator;
 
-    if (QLocale::Russian == QLocale::system().language())
-        translator.load(":/colorflood.qm");
-
+    translator.load(":/tr/" + QLocale::system().name() + ".qm");
     app.installTranslator(&translator);
 
     Window window;
