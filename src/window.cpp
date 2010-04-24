@@ -178,7 +178,11 @@ void Window::help ()
 {
     QMessageBox box;
     box.setWindowTitle("Color Flood");
-    box.setText(tr("The object of the game is to turn a board into one single color. Number of moves is limited. You start from top-left corner with one cell already flooded.\nGood luck!"));
+    box.setText(tr("The object of the game is to "
+                   "turn a board into one single color. "
+                   "Number of moves is limited. "
+                   "You start from top-left corner with one cell "
+                   "already flooded.\nGood luck!"));
     box.exec();
 }
 

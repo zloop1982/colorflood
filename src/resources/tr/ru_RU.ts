@@ -71,7 +71,7 @@ Good luck!</source>
 Удачи!</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="207"/>
+        <location filename="../../window.cpp" line="211"/>
         <source>Best record: %1/%2</source>
         <extracomment>best number of turns</extracomment>
         <translation type="unfinished">Рекорд: %1/%2</translation>
