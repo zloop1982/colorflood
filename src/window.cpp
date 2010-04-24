@@ -54,9 +54,9 @@ Window::Window ()
 
     updateTurns(turns, false);
 
-    // best result
-    bestResultLabel = new QLabel(this);
-    bestResultLabel->setAlignment(Qt::AlignRight);
+    // best result (minimal number of turns used to win)
+    minTurnsWinLabel = new QLabel(this);
+    minTurnsWinLabel->setAlignment(Qt::AlignRight);
 
     updateBestResult();
 
@@ -78,8 +78,8 @@ Window::Window ()
     vl->setAlignment(buttonGroup, Qt::AlignRight | Qt::AlignTop);
     vl->addWidget(turnsLabel);
     vl->setAlignment(turnsLabel, Qt::AlignRight | Qt::AlignBottom);
-    vl->addWidget(bestResultLabel);
-    vl->setAlignment(bestResultLabel, Qt::AlignRight | Qt::AlignBottom);
+    vl->addWidget(minTurnsWinLabel);
+    vl->setAlignment(minTurnsWinLabel, Qt::AlignRight | Qt::AlignBottom);
     vl->addLayout(lowerLayout);
     vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignBottom);
 
@@ -182,29 +182,29 @@ void Window::help ()
         box.exec();
 }
 
-void Window::updateBestResult (int newBestResult)
+void Window::updateBestResult (int newMinTurnsUsedToWin)
 {
      QSettings settings;
 
     Board::BoardSize size = board->getSize();
-    QString property = QString("stats/bestResult%1").arg(size);
+    QString property = QString("stats/minTurnsUsedToWin%1").arg(size);
 
-    if (newBestResult)
+    if (minTurnsUsedToWin)
     {
-        if (bestResult > newBestResult)
+        if (minTurnsUsedToWin > newMinTurnsUsedToWin)
         {
-            bestResult = newBestResult;
-            settings.setValue(property, bestResult);
+            minTurnsUsedToWin = newMinTurnsUsedToWin;
+            settings.setValue(property, minTurnsUsedToWin);
         }
     }
     else
     {
-        bestResult = settings.value(property,
-                                    board->getNumTurnsOfSize(size)).toInt();
+        minTurnsUsedToWin = settings.value(property,
+                                           board->getNumTurnsOfSize(size)).toInt();
     }
 
     //: best number of turns
-    bestResultLabel->setText(tr("Best record: %1/%2")
-                             .arg(bestResult)
-                             .arg(board->getNumTurnsOfSize(size)));
+    minTurnsWinLabel->setText(tr("Best record: %1/%2")
+                              .arg(minTurnsUsedToWin)
+                              .arg(board->getNumTurnsOfSize(size)));
 }

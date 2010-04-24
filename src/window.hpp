@@ -46,16 +46,16 @@ private slots:
     void help ();
 
 private:
-    void updateBestResult (int newBestResult = 0);
+    void updateBestResult (int newMinTurnsUsedToWin = 0);
 
     ButtonGroup *buttonGroup;
     Board *board;
     QLabel *turnsLabel;
-    QLabel *bestResultLabel;
+    QLabel *minTurnsWinLabel;
     QAction *less;
     QAction *more;
 
-    int bestResult;
+    int minTurnsUsedToWin;
 };
 
 #endif // !_WINDOW_HPP
