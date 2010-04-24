@@ -26,9 +26,12 @@ class FullScreenToggleButton : public QToolButton
 
 public:
     inline explicit FullScreenToggleButton (QWidget *parent);
+
+private slots:
+    inline void toggleFullscreen ();
 };
 
-FullScreenToggleButton::FullScreenToggleButton (QWidget *parent)
+FullScreenToggleButton::FullScreenToggleButton(QWidget *parent)
     : QToolButton(parent)
 {
     Q_ASSERT(parent);
@@ -50,7 +53,17 @@ FullScreenToggleButton::FullScreenToggleButton (QWidget *parent)
     setAutoFillBackground(true);
 
     // when we're clicked, toggle fullscreen
-    connect(this, SIGNAL(clicked()), parent, SLOT(fullScreenMode()));
+    connect(this, SIGNAL(clicked()), this, SLOT(toggleFullscreen()));
+}
+
+void FullScreenToggleButton::toggleFullscreen ()
+{
+    QWidget *parent = parentWidget();
+
+    if (parent->isFullScreen())
+        parent->showNormal();
+    else
+        parent->showFullScreen();
 }
 
 #endif // !_FULLSCREENTOGGLEBUTTON_HPP

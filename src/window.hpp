@@ -36,8 +36,6 @@ public:
 private slots:
     /// update number of turns
     void updateTurns (int turns, bool gameFinished);
-    /// toggle fullscreen mode
-    void fullScreenMode ();
     /// switch to next scheme
     void scheme ();
     /// less cells

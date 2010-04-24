@@ -25,7 +25,7 @@
 #include "window.hpp"
 #include "buttongroup.hpp"
 #include "board.hpp"
-#include "fullscreenexitbutton.hpp"
+#include "fullscreentogglebutton.hpp"
 #include "scheme.hpp"
 
 Window::Window ()
@@ -60,27 +60,28 @@ Window::Window ()
 
     updateBestResult();
 
-    // 'new game'/'help' buttons
+    // 'fullscreen toggle'/'new game' buttons
     QPushButton *newGame = new QPushButton(tr("New game"), this);
     QObject::connect(newGame, SIGNAL(pressed()), board, SLOT(randomize()));
 
-    QPushButton *help = new QPushButton(tr("Help"), this);
-    QObject::connect(help, SIGNAL(pressed()), this, SLOT(help()));
-
-    QHBoxLayout *lowerLayout = new QHBoxLayout;
-    lowerLayout->addWidget(help);
-    lowerLayout->addWidget(newGame);
+    FullScreenToggleButton *fsButton = new FullScreenToggleButton(this);
 
     // layouts
+    QHBoxLayout *lowerLayout = new QHBoxLayout;
+    lowerLayout->addWidget(newGame);
+    lowerLayout->setAlignment(newGame, Qt::AlignRight | Qt::AlignBottom);
+    lowerLayout->addWidget(fsButton);
+    lowerLayout->setAlignment(fsButton, Qt::AlignRight | Qt::AlignBottom);
+
     QVBoxLayout *vl = new QVBoxLayout;
     vl->addWidget(buttonGroup);
     vl->setAlignment(buttonGroup, Qt::AlignRight | Qt::AlignTop);
     vl->addWidget(turnsLabel);
-    vl->setAlignment(turnsLabel, Qt::AlignRight);
+    vl->setAlignment(turnsLabel, Qt::AlignRight | Qt::AlignBottom);
     vl->addWidget(bestResultLabel);
-    vl->setAlignment(bestResultLabel, Qt::AlignRight);
+    vl->setAlignment(bestResultLabel, Qt::AlignRight | Qt::AlignBottom);
     vl->addLayout(lowerLayout);
-    vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignTop);
+    vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignBottom);
 
     QHBoxLayout *hl = new QHBoxLayout;
     hl->addWidget(board);
@@ -92,10 +93,10 @@ Window::Window ()
     // menu bar
     QMenuBar *bar = new QMenuBar(this);
 
-    QObject::connect(bar->addAction(tr("Fullscreen mode")),
+    QObject::connect(bar->addAction(tr("Help")),
                      SIGNAL(triggered()),
                      this,
-                     SLOT(fullScreenMode()));
+                     SLOT(help()));
 
     QObject::connect(bar->addAction(
                          Scheme::getSchemeName(Scheme::getNextScheme())),
@@ -123,7 +124,6 @@ Window::Window ()
         more->setEnabled(false);
 
     // start it fullscreen
-    new FullScreenExitButton(this);
     showFullScreen();
 }
 
@@ -136,11 +136,6 @@ void Window::updateTurns (int turns, bool gameFinished)
 
     if (gameFinished)
         updateBestResult(turns);
-}
-
-void Window::fullScreenMode ()
-{
-    showFullScreen();
 }
 
 void Window::lessCells ()

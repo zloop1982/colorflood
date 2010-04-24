@@ -27,7 +27,7 @@ set(moc
   board.hpp
   button.hpp
   buttongroup.hpp
-  fullscreenexitbutton.hpp
+  fullscreentogglebutton.hpp
   window.hpp
   )
 
