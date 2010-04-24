@@ -10,4 +10,4 @@ Architecture: any
 Depends: libqt4-maemo5-core, libc6 (>= 2.5.0-1), libgcc1 (>= 1:4.2.1), libqt4-maemo5-gui, libstdc++6 (>= 4.2.1),, hildon-application-manager
 Description: "Color Flood" is a free, opensource 2D.
  "Color Flood" is a free, opensource 2D game in
- which player selects a colors to flood an area.
+ which player selects colors to flood an area.

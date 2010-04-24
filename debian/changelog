@@ -1,3 +1,27 @@
+colorflood (0.3-1) unstable; urgency=low
+
+  * move all resources to 'resources' directory
+  * rename files and vars in the sources
+  * move all files up by one level
+  * use gplv3
+  * update gitignore
+  * show number of turns used to win the game (task 1609)
+  * doxygen
+  * load translation based on system locale name
+  * remove extension from translation filename
+  * stats: best record
+  * move help button to menu bar
+  * toggle fullscreen instead of exit from it
+  * remove unused header
+  * fix best records
+  * rename bestResult to minTurnsUsedToWin to avoid misunderstanding
+  * fix indentation
+  * update translation
+  * button: use a buttonWidthInPixels constant instead of an explicit 64
+  * make long string readable by adding newlines
+
+ -- Serge Ziryukin <ftrvxmtrx@gmail.com>  Sat, 24 Apr 2010 17:38:43 +0300
+
 colorflood (0.2-1) unstable; urgency=low
 
   * Help button
