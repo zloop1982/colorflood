@@ -153,7 +153,7 @@ void Board::randomize ()
 
     turns = 0;
     finished = false;
-    emit turnsChanged(turns);
+    emit turnsChanged(turns, finished);
 
     // flood from top-left corner
     cells[0].flood = true;
@@ -241,7 +241,7 @@ void Board::flood (int brushIndex)
     if (finished)
         return;
 
-    emit turnsChanged(++turns);
+    turns++;
 
     // flood with new brush
     for (int y = 0; y < boardWidthInCells[size] ;y++)
@@ -287,6 +287,8 @@ void Board::flood (int brushIndex)
         /*: fail message */
         msg = tr("You lost!");
     }
+
+    emit turnsChanged(turns, finished);
 
     if (finished)
     {

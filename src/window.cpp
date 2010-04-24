@@ -43,16 +43,24 @@ Window::Window ()
                      board,
                      SLOT(flood(int)));
 
+    // turns
     turnsLabel = new QLabel(this);
     turnsLabel->setAlignment(Qt::AlignRight);
 
     QObject::connect(board,
-                     SIGNAL(turnsChanged(int)),
+                     SIGNAL(turnsChanged(int, bool)),
                      this,
-                     SLOT(updateTurns(int)));
+                     SLOT(updateTurns(int, bool)));
 
-    updateTurns(turns);
+    updateTurns(turns, false);
 
+    // best result
+    bestResultLabel = new QLabel(this);
+    bestResultLabel->setAlignment(Qt::AlignRight);
+
+    updateBestResult();
+
+    // 'new game'/'help' buttons
     QPushButton *newGame = new QPushButton(tr("New game"), this);
     QObject::connect(newGame, SIGNAL(pressed()), board, SLOT(randomize()));
 
@@ -63,11 +71,14 @@ Window::Window ()
     lowerLayout->addWidget(help);
     lowerLayout->addWidget(newGame);
 
+    // layouts
     QVBoxLayout *vl = new QVBoxLayout;
     vl->addWidget(buttonGroup);
     vl->setAlignment(buttonGroup, Qt::AlignRight | Qt::AlignTop);
     vl->addWidget(turnsLabel);
-    vl->setAlignment(turnsLabel, Qt::AlignRight | Qt::AlignBottom);
+    vl->setAlignment(turnsLabel, Qt::AlignRight);
+    vl->addWidget(bestResultLabel);
+    vl->setAlignment(bestResultLabel, Qt::AlignRight);
     vl->addLayout(lowerLayout);
     vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignTop);
 
@@ -111,16 +122,20 @@ Window::Window ()
     else if (board->getSize() == Board::NUM_SIZES - 1)
         more->setEnabled(false);
 
+    // start it fullscreen
     new FullScreenExitButton(this);
     showFullScreen();
 }
 
-void Window::updateTurns (int turns)
+void Window::updateTurns (int turns, bool gameFinished)
 {
     /*: number of turns */
     turnsLabel->setText(tr("Turns: %1/%2")
                         .arg(turns)
                         .arg(board->getNumTurnsOfSize(board->getSize())));
+
+    if (gameFinished)
+        updateBestResult(turns);
 }
 
 void Window::fullScreenMode ()
@@ -134,6 +149,7 @@ void Window::lessCells ()
 
     board->setSize(s);
     more->setEnabled(true);
+    updateBestResult();
 
     if (!s)
         less->setEnabled(false);
@@ -145,6 +161,7 @@ void Window::moreCells ()
 
     board->setSize(s);
     less->setEnabled(true);
+    updateBestResult();
 
     if (s == Board::NUM_SIZES - 1)
         more->setEnabled(false);
@@ -168,4 +185,28 @@ void Window::help ()
         box.setWindowTitle("Color Flood");
         box.setText(tr("The object of the game is to turn a board into one single color. Number of moves is limited. You start from top-left corner with one cell already flooded.\nGood luck!"));
         box.exec();
+}
+
+void Window::updateBestResult (int newBestResult)
+{
+     QSettings settings;
+
+    Board::BoardSize size = board->getSize();
+    QString property = QString("stats/bestResult%1").arg(size);
+
+    if (newBestResult)
+    {
+        bestResult = newBestResult;
+        settings.setValue(property, bestResult);
+    }
+    else
+    {
+        bestResult = settings.value(property,
+                                    board->getNumTurnsOfSize(size)).toInt();
+    }
+
+    //: best number of turns
+    bestResultLabel->setText(tr("Best record: %1/%2")
+                             .arg(bestResult)
+                             .arg(board->getNumTurnsOfSize(size)));
 }

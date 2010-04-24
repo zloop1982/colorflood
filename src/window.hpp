@@ -35,7 +35,7 @@ public:
 
 private slots:
     /// update number of turns
-    void updateTurns (int turns);
+    void updateTurns (int turns, bool gameFinished);
     /// toggle fullscreen mode
     void fullScreenMode ();
     /// switch to next scheme
@@ -48,11 +48,16 @@ private slots:
     void help ();
 
 private:
+    void updateBestResult (int newBestResult = 0);
+
     ButtonGroup *buttonGroup;
     Board *board;
     QLabel *turnsLabel;
+    QLabel *bestResultLabel;
     QAction *less;
     QAction *more;
+
+    int bestResult;
 };
 
 #endif // !_WINDOW_HPP
