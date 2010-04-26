@@ -1,3 +1,9 @@
+colorflood (0.3-2) unstable; urgency=low
+
+  * use libqt4 instead of libqt4-maemo5 and add bugtracker url
+
+ -- Serge Ziryukin <ftrvxmtrx@gmail.com>  Mon, 26 Apr 2010 11:40:21 +0300
+
 colorflood (0.3-1) unstable; urgency=low
 
   * move all resources to 'resources' directory
