@@ -8,8 +8,7 @@ Standards-Version: 3.7.2
 Package: colorflood
 Architecture: any
 Depends: libqt4-core (>= 4.6), libc6 (>= 2.5.0-1), libgcc1 (>= 1:4.2.1), libqt4-gui (>= 4.6), libstdc++6 (>= 4.2.1), hildon-application-manager
+XSBC-Bugtracker: http://github.com/ftrvxmtrx/colorflood/issues
 Description: "Color Flood" is a free, opensource 2D.
- "Color Flood" is a free, opensource 2D game in
- which player selects colors to flood an area.
-Bugtracker: http://github.com/ftrvxmtrx/colorflood/issues
+ "Color Flood" is a free, opensource 2D game in which player selects colors to flood an area.
 
