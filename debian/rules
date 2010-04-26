@@ -8,7 +8,7 @@ builddir:
 	mkdir -p builddir
 
 builddir/Makefile: builddir
-	cd builddir && cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_LIBRARY_PATH=/opt/qt4-maemo5/lib -DCMAKE_PROGRAM_PATH=/opt/qt4-maemo5/bin
+	cd builddir && cmake .. -DCMAKE_INSTALL_PREFIX=/usr
 
 build: build-stamp
 
