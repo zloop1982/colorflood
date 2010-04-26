@@ -1,10 +1,9 @@
 Source: colorflood
-Section: games
+Section: user/games
 Priority: extra
 Maintainer: Serge Ziryukin <ftrvxmtrx@gmail.com>
 Build-Depends: debhelper (>= 5), cmake (>= 2.6), libqt4-dev (>= 4.6)
 Standards-Version: 3.7.2
-XSBC-Bugtracker: http://github.com/ftrvxmtrx/colorflood/issues
 
 Package: colorflood
 Architecture: any
@@ -12,3 +11,5 @@ Depends: libqt4-core (>= 4.6), libc6 (>= 2.5.0-1), libgcc1 (>= 1:4.2.1), libqt4-
 Description: "Color Flood" is a free, opensource 2D.
  "Color Flood" is a free, opensource 2D game in
  which player selects colors to flood an area.
+Bugtracker: http://github.com/ftrvxmtrx/colorflood/issues
+

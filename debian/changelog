@@ -1,3 +1,9 @@
+colorflood (0.3-3) unstable; urgency=low
+
+  * fix debian packaging
+
+ -- Serge Ziryukin <ftrvxmtrx@gmail.com>  Mon, 26 Apr 2010 12:35:17 +0300
+
 colorflood (0.3-2) unstable; urgency=low
 
   * use libqt4 instead of libqt4-maemo5 and add bugtracker url
