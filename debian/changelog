@@ -1,3 +1,10 @@
+colorflood (0.3-4) unstable; urgency=low
+
+  * update description
+  * add homepage url
+
+ -- Serge Ziryukin <ftrvxmtrx@gmail.com>  Mon, 26 Apr 2010 14:31:05 +0300
+
 colorflood (0.3-3) unstable; urgency=low
 
   * fix debian packaging
