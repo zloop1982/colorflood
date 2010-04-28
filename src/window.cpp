@@ -50,7 +50,7 @@ Window::Window ()
     turnsLabel->setAlignment(Qt::AlignRight);
 
     QObject::connect(board,
-                     SIGNAL(turnsChanged(int, bool, bool)),
+                     SIGNAL(gameStateChanged(int, bool, bool)),
                      this,
                      SLOT(updateGameState(int, bool, bool)));
 
