@@ -29,7 +29,9 @@
 #include "scheme.hpp"
 
 Window::Window ()
-    : QWidget()
+    : QWidget(),
+      gamesWon(0),
+      gamesPlayed(0)
 {
     setWindowTitle("Color Flood");
     setWindowIcon(QIcon(":/images/icon_48x48.png"));
@@ -58,7 +60,12 @@ Window::Window ()
     minTurnsWinLabel = new QLabel(this);
     minTurnsWinLabel->setAlignment(Qt::AlignRight);
 
+    // games won/played
+    gamesWonPlayedLabel = new QLabel(this);
+    gamesWonPlayedLabel->setAlignment(Qt::AlignRight);
+
     updateBestResult();
+    updateGamesWonPlayed();
 
     // 'fullscreen toggle'/'new game' buttons
     QPushButton *newGame = new QPushButton(tr("New game"), this);
@@ -80,6 +87,8 @@ Window::Window ()
     vl->setAlignment(turnsLabel, Qt::AlignRight | Qt::AlignBottom);
     vl->addWidget(minTurnsWinLabel);
     vl->setAlignment(minTurnsWinLabel, Qt::AlignRight | Qt::AlignBottom);
+    vl->addWidget(gamesWonPlayedLabel);
+    vl->setAlignment(gamesWonPlayedLabel, Qt::AlignRight | Qt::AlignBottom);
     vl->addLayout(lowerLayout);
     vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignBottom);
 
@@ -189,26 +198,58 @@ void Window::help ()
 void Window::updateBestResult (int newMinTurnsUsedToWin)
 {
     QSettings settings;
-
     Board::BoardSize size = board->getSize();
     QString property = QString("stats/minTurnsUsedToWin%1").arg(size);
+    int maxTurns = board->getNumTurnsOfSize(size);
 
-    if (minTurnsUsedToWin)
+    if (newMinTurnsUsedToWin)
     {
+        bool won = newMinTurnsUsedToWin < maxTurns;
+
         if (minTurnsUsedToWin > newMinTurnsUsedToWin)
         {
             minTurnsUsedToWin = newMinTurnsUsedToWin;
             settings.setValue(property, minTurnsUsedToWin);
         }
+
+        updateGamesWonPlayed(true, won);
     }
     else
     {
-        minTurnsUsedToWin = settings.value(property,
-                                           board->getNumTurnsOfSize(size)).toInt();
+        minTurnsUsedToWin = settings.value(property, maxTurns).toInt();
     }
 
     //: best number of turns
     minTurnsWinLabel->setText(tr("Best record: %1/%2")
                               .arg(minTurnsUsedToWin)
-                              .arg(board->getNumTurnsOfSize(size)));
+                              .arg(maxTurns));
+}
+
+void Window::updateGamesWonPlayed (bool played, bool won)
+{
+    QSettings settings;
+    Board::BoardSize size = board->getSize();
+    QString wonProperty = QString("stats/gamesWon%1").arg(size);
+    QString playedProperty = QString("stats/gamesPlayed%1").arg(size);
+
+    if (!played && !won)
+    {
+        gamesWon = settings.value(wonProperty, 0).toInt();
+        gamesPlayed = settings.value(playedProperty, 0).toInt();
+    }
+    else
+    {
+        gamesPlayed++;
+
+        if (won)
+            gamesWon++;
+
+        settings.setValue(wonProperty, gamesWon);
+        settings.setValue(playedProperty, gamesPlayed);
+    }
+
+    //: games won/played
+    gamesWonPlayedLabel->setText(tr("Games won: %1/%2")
+                                 .arg(gamesWon)
+                                 .arg(gamesPlayed));
 }

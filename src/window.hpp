@@ -47,15 +47,19 @@ private slots:
 
 private:
     void updateBestResult (int newMinTurnsUsedToWin = 0);
+    void updateGamesWonPlayed (bool played = false, bool won = false);
 
     ButtonGroup *buttonGroup;
     Board *board;
     QLabel *turnsLabel;
     QLabel *minTurnsWinLabel;
+    QLabel *gamesWonPlayedLabel;
     QAction *less;
     QAction *more;
 
     int minTurnsUsedToWin;
+    int gamesWon;
+    int gamesPlayed;
 };
 
 #endif // !_WINDOW_HPP
