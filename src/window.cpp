@@ -22,6 +22,7 @@
 #include <QSettings>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QSizePolicy>
 #include "window.hpp"
 #include "buttongroup.hpp"
 #include "board.hpp"
@@ -76,19 +77,18 @@ Window::Window ()
     // layouts
     QHBoxLayout *lowerLayout = new QHBoxLayout;
     lowerLayout->addWidget(newGame);
-    lowerLayout->setAlignment(newGame, Qt::AlignRight | Qt::AlignBottom);
     lowerLayout->addWidget(fsButton);
-    lowerLayout->setAlignment(fsButton, Qt::AlignRight | Qt::AlignBottom);
+
+    QVBoxLayout *statsLayout = new QVBoxLayout;
+    statsLayout->addWidget(turnsLabel);
+    statsLayout->addWidget(minTurnsWinLabel);
+    statsLayout->addWidget(gamesWonPlayedLabel);
 
     QVBoxLayout *vl = new QVBoxLayout;
     vl->addWidget(buttonGroup);
     vl->setAlignment(buttonGroup, Qt::AlignRight | Qt::AlignTop);
-    vl->addWidget(turnsLabel);
-    vl->setAlignment(turnsLabel, Qt::AlignRight | Qt::AlignBottom);
-    vl->addWidget(minTurnsWinLabel);
-    vl->setAlignment(minTurnsWinLabel, Qt::AlignRight | Qt::AlignBottom);
-    vl->addWidget(gamesWonPlayedLabel);
-    vl->setAlignment(gamesWonPlayedLabel, Qt::AlignRight | Qt::AlignBottom);
+    vl->addLayout(statsLayout);
+    vl->setAlignment(statsLayout, Qt::AlignRight | Qt::AlignBottom);
     vl->addLayout(lowerLayout);
     vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignBottom);
 
