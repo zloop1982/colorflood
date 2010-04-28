@@ -34,8 +34,8 @@ public:
     Window ();
 
 private slots:
-    /// update number of turns
-    void updateTurns (int turns, bool gameFinished);
+    /// update game state
+    void updateGameState (int turns, bool gameFinished, bool won);
     /// switch to next scheme
     void scheme ();
     /// less cells

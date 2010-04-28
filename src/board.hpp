@@ -82,7 +82,7 @@ protected:
     void paintEvent (QPaintEvent *event);
 
 signals:
-    void turnsChanged (int turns, bool gameFinished);
+    void updateGameState (int turns, bool gameFinished, bool won);
 
 public slots:
     /// randomize cells

@@ -50,11 +50,11 @@ Window::Window ()
     turnsLabel->setAlignment(Qt::AlignRight);
 
     QObject::connect(board,
-                     SIGNAL(turnsChanged(int, bool)),
+                     SIGNAL(turnsChanged(int, bool, bool)),
                      this,
-                     SLOT(updateTurns(int, bool)));
+                     SLOT(updateGameState(int, bool, bool)));
 
-    updateTurns(turns, false);
+    updateGameState(turns, false, false);
 
     // best result (minimal number of turns used to win)
     minTurnsWinLabel = new QLabel(this);
@@ -136,7 +136,7 @@ Window::Window ()
     showFullScreen();
 }
 
-void Window::updateTurns (int turns, bool gameFinished)
+void Window::updateGameState (int turns, bool gameFinished, bool won)
 {
     /*: number of turns */
     turnsLabel->setText(tr("Turns: %1/%2")
@@ -144,7 +144,10 @@ void Window::updateTurns (int turns, bool gameFinished)
                         .arg(board->getNumTurnsOfSize(board->getSize())));
 
     if (gameFinished)
+    {
         updateBestResult(turns);
+        updateGamesWonPlayed(true, won);
+    }
 }
 
 void Window::lessCells ()
@@ -204,15 +207,11 @@ void Window::updateBestResult (int newMinTurnsUsedToWin)
 
     if (newMinTurnsUsedToWin)
     {
-        bool won = newMinTurnsUsedToWin < maxTurns;
-
         if (minTurnsUsedToWin > newMinTurnsUsedToWin)
         {
             minTurnsUsedToWin = newMinTurnsUsedToWin;
             settings.setValue(property, minTurnsUsedToWin);
         }
-
-        updateGamesWonPlayed(true, won);
     }
     else
     {

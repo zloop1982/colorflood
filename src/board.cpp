@@ -153,7 +153,7 @@ void Board::randomize ()
 
     turns = 0;
     finished = false;
-    emit turnsChanged(turns, finished);
+    emit updateGameState(turns, finished, false);
 
     // flood from top-left corner
     cells[0].flood = true;
@@ -288,7 +288,7 @@ void Board::flood (int brushIndex)
         msg = tr("You lost!");
     }
 
-    emit turnsChanged(turns, finished);
+    emit updateGameState(turns, finished, allFlooded);
 
     if (finished)
     {
