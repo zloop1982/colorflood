@@ -38,49 +38,59 @@ You used %1 turns out of %2.</source>
 <context>
     <name>Window</name>
     <message>
-        <location filename="../../window.cpp" line="71"/>
+        <location filename="../../window.cpp" line="68"/>
         <source>New game</source>
         <translation type="unfinished">Новая игра</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="105"/>
+        <location filename="../../window.cpp" line="103"/>
         <source>Help</source>
         <translation type="unfinished">Помощь</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="116"/>
+        <location filename="../../window.cpp" line="121"/>
         <source>Less cells</source>
         <translation type="unfinished">Меньше клеток</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="123"/>
+        <location filename="../../window.cpp" line="128"/>
         <source>More cells</source>
         <translation type="unfinished">Больше клеток</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="142"/>
+        <location filename="../../window.cpp" line="147"/>
         <source>Turns: %1/%2</source>
         <extracomment>number of turns</extracomment>
         <translation type="unfinished">Ходов: %1/%2</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="190"/>
+        <location filename="../../window.cpp" line="198"/>
         <source>The object of the game is to turn a board into one single color. Number of moves is limited. You start from top-left corner with one cell already flooded.
 Good luck!</source>
         <translation type="unfinished">Цель игры - залить поле одним цветом. Количество ходов ограничено. Вы начинаете с верхнего левого угла с одной клеткой, которая уже залита.
 Удачи!</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="223"/>
+        <location filename="../../window.cpp" line="264"/>
         <source>Best record: %1/%2</source>
         <extracomment>best number of turns</extracomment>
         <translation type="unfinished">Рекорд: %1/%2</translation>
     </message>
     <message>
-        <location filename="../../window.cpp" line="252"/>
+        <location filename="../../window.cpp" line="293"/>
         <source>Games won: %1/%2</source>
         <extracomment>games won/played</extracomment>
         <translation type="unfinished">Выигранных игр: %1/%2</translation>
+    </message>
+    <message>
+        <location filename="../../window.hpp" line="62"/>
+        <source>Left-handed mode</source>
+        <translation type="unfinished">Режим для левшей</translation>
+    </message>
+    <message>
+        <location filename="../../window.hpp" line="63"/>
+        <source>Right-handed mode</source>
+        <translation type="unfinished">Режим для правшей</translation>
     </message>
 </context>
 </TS>

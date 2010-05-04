@@ -48,7 +48,6 @@ Window::Window ()
 
     // turns
     turnsLabel = new QLabel(this);
-    turnsLabel->setAlignment(Qt::AlignRight);
 
     QObject::connect(board,
                      SIGNAL(gameStateChanged(int, bool, bool)),
@@ -59,11 +58,8 @@ Window::Window ()
 
     // best result (minimal number of turns used to win)
     minTurnsWinLabel = new QLabel(this);
-    minTurnsWinLabel->setAlignment(Qt::AlignRight);
-
     // games won/played
     gamesWonPlayedLabel = new QLabel(this);
-    gamesWonPlayedLabel->setAlignment(Qt::AlignRight);
 
     updateBestResult();
     updateGamesWonPlayed();
@@ -75,29 +71,31 @@ Window::Window ()
     FullScreenToggleButton *fsButton = new FullScreenToggleButton(this);
 
     // layouts
-    QHBoxLayout *lowerLayout = new QHBoxLayout;
+    lowerLayout = new QHBoxLayout;
     lowerLayout->addWidget(newGame);
     lowerLayout->addWidget(fsButton);
 
-    QVBoxLayout *statsLayout = new QVBoxLayout;
+    statsLayout = new QVBoxLayout;
     statsLayout->addWidget(turnsLabel);
     statsLayout->addWidget(minTurnsWinLabel);
     statsLayout->addWidget(gamesWonPlayedLabel);
 
-    QVBoxLayout *vl = new QVBoxLayout;
+    vl = new QVBoxLayout;
     vl->addWidget(buttonGroup);
-    vl->setAlignment(buttonGroup, Qt::AlignRight | Qt::AlignTop);
     vl->addLayout(statsLayout);
-    vl->setAlignment(statsLayout, Qt::AlignRight | Qt::AlignBottom);
     vl->addLayout(lowerLayout);
-    vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignBottom);
 
-    QHBoxLayout *hl = new QHBoxLayout;
+    hl = new QHBoxLayout;
     hl->addWidget(board);
     hl->setAlignment(board, Qt::AlignLeft);
     hl->addLayout(vl);
 
     setLayout(hl);
+
+    // rearrange layouting based on hand mode
+    QSettings settings;
+    currentHand = settings.value("hand", HAND_RIGHT).toInt();
+    handMode(false);
 
     // menu bar
     QMenuBar *bar = new QMenuBar(this);
@@ -112,6 +110,13 @@ Window::Window ()
                      SIGNAL(triggered()),
                      this,
                      SLOT(scheme()));
+
+    hand = bar->addAction(handToNextString(currentHand));
+
+    QObject::connect(hand,
+                     SIGNAL(triggered()),
+                     this,
+                     SLOT(handMode()));
 
     less = bar->addAction(tr("Less cells"));
 
@@ -196,6 +201,43 @@ void Window::help ()
                    "You start from top-left corner with one cell "
                    "already flooded.\nGood luck!"));
     box.exec();
+}
+
+void Window::handMode (bool toggle)
+{
+    if (toggle)
+    {
+        currentHand = (HAND_RIGHT == currentHand) ? HAND_LEFT : HAND_RIGHT;
+
+        QSettings settings;
+        settings.setValue("hand", currentHand);
+        hand->setText(handToNextString(currentHand));
+    }
+
+    if (HAND_LEFT == currentHand)
+    {
+        statsLayout->setAlignment(turnsLabel, Qt::AlignLeft);
+        statsLayout->setAlignment(minTurnsWinLabel, Qt::AlignLeft);
+        statsLayout->setAlignment(gamesWonPlayedLabel, Qt::AlignLeft);
+
+        vl->setAlignment(buttonGroup, Qt::AlignLeft | Qt::AlignTop);
+        vl->setAlignment(statsLayout, Qt::AlignLeft | Qt::AlignBottom);
+        vl->setAlignment(lowerLayout, Qt::AlignLeft | Qt::AlignBottom);
+
+        hl->setDirection(QBoxLayout::RightToLeft);
+    }
+    else
+    {
+        statsLayout->setAlignment(turnsLabel, Qt::AlignRight);
+        statsLayout->setAlignment(minTurnsWinLabel, Qt::AlignRight);
+        statsLayout->setAlignment(gamesWonPlayedLabel, Qt::AlignRight);
+
+        vl->setAlignment(buttonGroup, Qt::AlignRight | Qt::AlignTop);
+        vl->setAlignment(statsLayout, Qt::AlignRight | Qt::AlignBottom);
+        vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignBottom);
+
+        hl->setDirection(QBoxLayout::LeftToRight);
+    }
 }
 
 void Window::updateBestResult (int newMinTurnsUsedToWin)

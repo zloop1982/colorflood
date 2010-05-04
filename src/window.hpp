@@ -24,6 +24,8 @@ class ButtonGroup;
 class Board;
 class QLabel;
 class QAction;
+class QHBoxLayout;
+class QVBoxLayout;
 
 /// main window class
 class Window : public QWidget
@@ -44,8 +46,23 @@ private slots:
     void moreCells ();
     /// show help
     void help ();
+    /// switch right/left-handed mode
+    void handMode (bool toggle = true);
 
 private:
+    enum
+    {
+        HAND_RIGHT = 0,
+        HAND_LEFT
+    };
+
+    static QString handToNextString (int hand)
+        {
+            return (HAND_RIGHT == hand ?
+                    tr("Left-handed mode") :
+                    tr("Right-handed mode"));
+        }
+
     void updateBestResult (int newMinTurnsUsedToWin = 0);
     void updateGamesWonPlayed (bool played = false, bool won = false);
 
@@ -56,10 +73,17 @@ private:
     QLabel *gamesWonPlayedLabel;
     QAction *less;
     QAction *more;
+    QAction *hand;
+
+    QHBoxLayout *lowerLayout;
+    QVBoxLayout *statsLayout;
+    QHBoxLayout *hl;
+    QVBoxLayout *vl;
 
     int minTurnsUsedToWin;
     int gamesWon;
     int gamesPlayed;
+    int currentHand;
 };
 
 #endif // !_WINDOW_HPP
