@@ -277,7 +277,7 @@ void Board::flood (int brushIndex)
     {
         finished = true;
         /*: win message */
-        msg = (tr("You won!\nYou used %1 turns out of %2.")
+        msg = (tr("You win!\nYou have used %1 turns out of %2.")
                .arg(turns)
                .arg(getNumTurnsOfSize(size)));
     }
@@ -285,7 +285,7 @@ void Board::flood (int brushIndex)
     {
         finished = true;
         /*: fail message */
-        msg = tr("You lost!");
+        msg = tr("You lose!");
     }
 
     emit gameStateChanged(turns, finished, allFlooded);

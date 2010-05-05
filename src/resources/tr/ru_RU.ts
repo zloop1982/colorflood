@@ -5,15 +5,15 @@
     <name>Board</name>
     <message>
         <location filename="../../board.cpp" line="280"/>
-        <source>You won!
-You used %1 turns out of %2.</source>
+        <source>You win!
+You have used %1 turns out of %2.</source>
         <extracomment>win message</extracomment>
-        <translation type="unfinished">Вы победили!
+        <translation type="unfinished">Вы выиграли!
 Вы использовали %1 из %2 ходов.</translation>
     </message>
     <message>
         <location filename="../../board.cpp" line="288"/>
-        <source>You lost!</source>
+        <source>You lose!</source>
         <extracomment>fail message</extracomment>
         <translation type="unfinished">Вы проиграли!</translation>
     </message>
