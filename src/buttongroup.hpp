@@ -30,8 +30,8 @@ public:
     ButtonGroup (QWidget *parent);
 
 signals:
-    /// flood with specific brush
-    void flood (int brushIndex);
+    /// flood with specific color
+    void flood (int colorIndex);
 
 private:
     QButtonGroup group;

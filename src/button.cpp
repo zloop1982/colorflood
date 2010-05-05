@@ -21,9 +21,9 @@
 
 static const int buttonWidthInPixels = 64;
 
-Button::Button (QWidget *parent, int brushIndex)
+Button::Button (QWidget *parent, int colorIndex)
     : QPushButton(parent),
-      brushIndex(brushIndex)
+      colorIndex(colorIndex)
 {
     setFixedSize(buttonWidthInPixels, buttonWidthInPixels);
 }
@@ -33,9 +33,9 @@ void Button::paintEvent (QPaintEvent * /* event */)
     QPainter painter;
     painter.begin(this);
 
-    const QVector<QBrush> &scheme = Scheme::instance().getScheme();
+    const QVector<QColor> &scheme = Scheme::instance().getScheme();
     painter.fillRect(0, 0, buttonWidthInPixels, buttonWidthInPixels,
-                     scheme.at(brushIndex));
+                     scheme.at(colorIndex));
 
     painter.end();
 }

@@ -15,7 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QBrush>
+#include <QColor>
 #include <QPainter>
 #include <QPixmap>
 #include <QPushButton>
@@ -29,7 +29,7 @@ ButtonGroup::ButtonGroup (QWidget *parent)
 {
     Q_ASSERT(parent);
 
-    const QVector<QBrush> &scheme = Scheme::instance().getScheme();
+    const QVector<QColor> &scheme = Scheme::instance().getScheme();
     QGridLayout *layout = new QGridLayout;
 
     for (int i = 0; i < scheme.size(); i++)

@@ -15,6 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
 #include <QMetaType>
 #include <QDataStream>
 #include <QSettings>
@@ -22,6 +23,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QMessageBox>
+#include <QPropertyAnimation>
 #include "board.hpp"
 #include "scheme.hpp"
 
@@ -41,7 +43,7 @@ static QDataStream &operator<< (QDataStream &out, const Board::CellVector &rv)
          cell != rv.end();
          cell++)
     {
-        out << (*cell).brush;
+        out << (*cell).color;
         out << (*cell).flood;
     }
 
@@ -56,7 +58,7 @@ static QDataStream &operator>> (QDataStream &in, Board::CellVector &rv)
 
     for (; !in.atEnd() ;)
     {
-        in >> r.brush >> r.flood;
+        in >> r.color >> r.flood;
         rv << r;
     }
 
@@ -96,6 +98,11 @@ Board::Board (QWidget *parent, int *turns)
         randomize();
 
     *turns = this->turns;
+
+    const QVector<QColor> &scheme = Scheme::instance().getScheme();
+    animatedFlood = scheme.at(cells[0].color);
+    animate = new QPropertyAnimation(this, "animatedFlood", this);
+    animate->setDuration(150);
 }
 
 Board::~Board ()
@@ -134,7 +141,7 @@ void Board::randomize ()
 {
     Cell cell;
 
-    cell.brush = 0;
+    cell.color = 0;
     cell.flood = false;
 
     cells.clear();
@@ -142,13 +149,13 @@ void Board::randomize ()
 
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
 
-    int numBrushes = Scheme::instance().getScheme().size();
+    int numColors = Scheme::instance().getScheme().size();
 
     for (QVector<Cell>::iterator cell = cells.begin();
          cell != cells.end();
          cell++)
     {
-        (*cell).brush = qrand() % numBrushes;
+        (*cell).color = qrand() % numColors;
     }
 
     turns = 0;
@@ -157,7 +164,7 @@ void Board::randomize ()
 
     // flood from top-left corner
     cells[0].flood = true;
-    floodNeighbours(cells[0].brush, 0, 0);
+    floodNeighbours(cells[0].color, 0, 0);
 
     update();
 }
@@ -172,39 +179,51 @@ int Board::getNumTurnsOfSize (BoardSize size)
     return turnsForSize[size];
 }
 
+QColor Board::getAnimatedFlood () const
+{
+    return animatedFlood;
+}
+
 int Board::getCellSize (BoardSize size)
 {
     return boardWidthInPixels / boardWidthInCells[size];
 }
 
-void Board::tryFloodRecurse (quint8 brush, int x, int y)
+void Board::setAnimatedFlood (QColor color)
+{
+    animatedFlood = color;
+    update();
+}
+
+void Board::tryFloodRecurse (quint8 color, int x, int y)
 {
     Cell &cell = cells[x + y*boardWidthInCells[size]];
 
-    if (!cell.flood && cell.brush == brush)
+    if (!cell.flood && cell.color == color)
     {
         cell.flood = true;
-        floodNeighbours(brush, x, y);
+        cell.fresh = true;
+        floodNeighbours(color, x, y);
     }
 }
 
-void Board::floodNeighbours (quint8 brush, int x, int y)
+void Board::floodNeighbours (quint8 color, int x, int y)
 {
     int s = boardWidthInCells[size];
 
-    cells[x + y*s].brush = brush;
+    cells[x + y*s].color = color;
 
     if (x > 0)
-        tryFloodRecurse(brush, x - 1, y);
+        tryFloodRecurse(color, x - 1, y);
 
     if (y > 0)
-        tryFloodRecurse(brush, x, y - 1);
+        tryFloodRecurse(color, x, y - 1);
 
     if (x < s - 1)
-        tryFloodRecurse(brush, x + 1, y);
+        tryFloodRecurse(color, x + 1, y);
         
     if (y < s - 1)
-        tryFloodRecurse(brush, x, y + 1);
+        tryFloodRecurse(color, x, y + 1);
 }
 
 void Board::paintEvent (QPaintEvent *event)
@@ -213,8 +232,8 @@ void Board::paintEvent (QPaintEvent *event)
     painter.begin(this);
 
     QRect cell = QRect(0, 0, getCellSize(size), getCellSize(size));
-
-    const QVector<QBrush> &scheme = Scheme::instance().getScheme();
+    const QVector<QColor> &scheme = Scheme::instance().getScheme();
+    bool animating = (QAbstractAnimation::Running == animate->state());
 
     for (int y = 0; y < boardWidthInCells[size] ;y++)
     {
@@ -225,17 +244,22 @@ void Board::paintEvent (QPaintEvent *event)
             cell.moveTo(x * cell.width(), y * cell.height());
 
             if (cell.intersects(event->rect()))
-                painter.fillRect(cell, scheme.at(cells[n].brush));
+            {
+                painter.fillRect(cell, scheme.at(cells[n].color));
+
+                if (animating && cells[n].flood && !cells[n].fresh)
+                    painter.fillRect(cell, animatedFlood);
+            }
         }
     }
 
     painter.end();
 }
 
-void Board::flood (int brushIndex)
+void Board::flood (int colorIndex)
 {
-    // don't fill with the same brush over and over again
-    if (brushIndex == cells[0].brush)
+    // don't fill with the same color over and over again
+    if (colorIndex == cells[0].color)
         return;
 
     if (finished)
@@ -243,7 +267,18 @@ void Board::flood (int brushIndex)
 
     turns++;
 
-    // flood with new brush
+    int oldColor = cells[0].color;
+
+    // clear 'fresh' flag
+    for (int y = 0; y < boardWidthInCells[size] ;y++)
+    {
+        int n = y * boardWidthInCells[size];
+
+        for (int x = 0; x < boardWidthInCells[size] ;x++, n++)
+            cells[n].fresh = false;
+    }
+
+    // flood with new color
     for (int y = 0; y < boardWidthInCells[size] ;y++)
     {
         int n = y * boardWidthInCells[size];
@@ -251,11 +286,14 @@ void Board::flood (int brushIndex)
         for (int x = 0; x < boardWidthInCells[size] ;x++, n++)
         {
             if (cells[n].flood)
-                floodNeighbours(brushIndex, x, y);
+                floodNeighbours(colorIndex, x, y);
         }
     }
 
-    repaint();
+    const QVector<QColor> &scheme = Scheme::instance().getScheme();
+    animate->setStartValue(scheme.at(oldColor));
+    animate->setEndValue(scheme.at(colorIndex));
+    animate->start();
 
     bool allFlooded = true;
 

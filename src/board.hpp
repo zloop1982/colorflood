@@ -20,15 +20,19 @@
 
 #include <QWidget>
 #include <QVector>
-#include <QBrush>
+#include <QColor>
 
 class QPaintEvent;
 class QMouseEvent;
+class QPropertyAnimation;
 
 /// board class
 class Board : public QWidget
 {
     Q_OBJECT;
+    Q_PROPERTY(QColor animatedFlood
+               READ getAnimatedFlood
+               WRITE setAnimatedFlood);
 
 public:
     /// board sizes
@@ -43,8 +47,9 @@ public:
     /// cell type
     typedef struct
     {
-        quint8 brush; ///< brush index
+        quint8 color; ///< color index
         bool   flood; ///< 'cell filled' flag
+        bool   fresh; ///< 'just filled' flag
     }Cell;
 
     typedef QVector<Board::Cell> CellVector;
@@ -60,6 +65,9 @@ public:
     static int getWidthInCells (BoardSize size);
     static int getNumTurnsOfSize (BoardSize size);
 
+    void setAnimatedFlood (QColor color);
+    QColor getAnimatedFlood () const;
+
 private:
     /// number of cells for specific board size
     static const int boardWidthInCells[NUM_SIZES];
@@ -69,14 +77,16 @@ private:
     /// get cell size in pixels for specific board size
     static int getCellSize (BoardSize size);
     /// flood recursively if a cell isn't filled yet
-    void tryFloodRecurse (quint8 brush, int x, int y);
+    void tryFloodRecurse (quint8 color, int x, int y);
     /// flood neighbouring cells
-    void floodNeighbours (quint8 brush, int x, int y);
+    void floodNeighbours (quint8 color, int x, int y);
 
     BoardSize  size;     ///< board size
     CellVector cells;    ///< cells data
     int        turns;    ///< number of turns used
     bool       finished; ///< 'game finished' flag
+    QColor     animatedFlood;
+    QPropertyAnimation *animate;
 
 protected:
     void paintEvent (QPaintEvent *event);
@@ -87,8 +97,8 @@ signals:
 public slots:
     /// randomize cells
     void randomize ();
-    /// flood with specific brush
-    void flood (int brushIndex);
+    /// flood with specific color
+    void flood (int colorIndex);
 };
 
 #endif // !_BOARD_HPP

@@ -20,7 +20,7 @@
 
 #include <QVector>
 #include <QPair>
-#include <QBrush>
+#include <QColor>
 #include <QString>
 
 /// scheme singleton class
@@ -39,12 +39,12 @@ public:
     static int getNextScheme ();
     /// get scheme name
     static QString getSchemeName (int scheme);
-    /// get scheme brushes
-    const QVector<QBrush> &getScheme (int scheme);
+    /// get scheme colors
+    const QVector<QColor> &getScheme (int scheme);
     /// get current scheme name
     static QString getSchemeName ();
-    /// get current scheme brushes
-    const QVector<QBrush> &getScheme ();
+    /// get current scheme colors
+    const QVector<QColor> &getScheme ();
     /// set current scheme by its index
     static void setScheme (int scheme);
 
