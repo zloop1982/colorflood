@@ -19,8 +19,6 @@
 #include "button.hpp"
 #include "scheme.hpp"
 
-static const int buttonWidthInPixels = 64;
-
 Button::Button (QWidget *parent, int colorIndex)
     : QPushButton(parent),
       colorIndex(colorIndex)
@@ -34,8 +32,9 @@ void Button::paintEvent (QPaintEvent * /* event */)
     painter.begin(this);
 
     const QVector<QColor> &scheme = Scheme::instance().getScheme();
-    painter.fillRect(0, 0, buttonWidthInPixels, buttonWidthInPixels,
-                     scheme.at(colorIndex));
+    painter.setBrush(scheme.at(colorIndex));
 
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.drawPath(getPath());
     painter.end();
 }

@@ -19,6 +19,7 @@
 #define _BUTTON_HPP
 
 #include <QPushButton>
+#include <QPainterPath>
 
 /// color button class
 class Button : public QPushButton
@@ -31,6 +32,26 @@ public:
 private:
     /// color index
     const int colorIndex;
+
+    static const int buttonWidthInPixels = 64;
+    static const int buttonCornerRadiusInPixels = 12;
+
+    static QPainterPath &getPath ()
+        {
+            static QPainterPath path;
+
+            if (path.isEmpty())
+            {
+                path.addRoundedRect(1,
+                                    1,
+                                    buttonWidthInPixels - 2,
+                                    buttonWidthInPixels - 2,
+                                    buttonCornerRadiusInPixels,
+                                    buttonCornerRadiusInPixels);
+            }
+
+            return path;
+        }
 
 protected:
     void paintEvent (QPaintEvent *event);
