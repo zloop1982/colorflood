@@ -1,3 +1,27 @@
+colorflood (0.4-1) stable; urgency=low
+
+  * debian: update game url
+  * use libqt4 instead of libqt4-maemo5 and add bugtracker url
+  * update debian/changelog
+  * update debian/rules
+  * fix build/run depends
+  * change bugtracker url field name; fix section name
+  * fix debian packaging
+  * update description
+  * add homepage url
+  * update debian version
+  * games won/played stat. Closes #4
+  * rename updateTurns to updateGameState and fix games won/played when player wins with turns == maxTurns
+  * fix 'game state changed' signal name
+  * put labels inside vbox layout, fix their alignment. Closes #2
+  * left-handed mode. Closes #5
+  * fix win/lose messages and their translations
+  * pretty animated flood. Closes #7
+  * remove qt4_add_translation as translations are listed in resource file
+  * pretty buttons with rounded corners. Closes #6
+
+ -- Serge Ziryukin <ftrvxmtrx@gmail.com>  Sun, 09 May 2010 20:20:50 +0300
+
 colorflood (0.3-4) unstable; urgency=low
 
   * update description
