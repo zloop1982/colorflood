@@ -8,8 +8,15 @@ Standards-Version: 3.7.2
 Package: colorflood
 Architecture: any
 Depends: libqt4-core (>= 4.6), libc6 (>= 2.5.0-1), libgcc1 (>= 1:4.2.1), libqt4-gui (>= 4.6), libstdc++6 (>= 4.2.1), hildon-application-manager
+XB-Maemo-Display-Name: Color Flood
+XB-Maemo-Icon-26:
+ iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAAAAXNSR0IArs4c
+ 6QAAAAlwSFlzAAALEgAACxIB0t1+/AAAAJpJREFUWMNj/FCwgIEQYGurJagm
+ YNdhgmqkNpwgqIaJYZCBUQeNOmjUQaMOGnXQYHcQCzGKnoUwE1RjEeZAUE2R
+ QMNolI06aNRBow4addCog6hel725Rbh+kVrzl6CaR1ndBNW8eVUxGmWjDhp1
+ 0KiDRh006iBqA0a3DQ8I12VEjA3KORCup+JWjUbZqINGHTTqoFEHjTqI6gAA
+ /XgXTMjHDVEAAAAASUVORK5CYII=
 XSBC-Bugtracker: http://github.com/ftrvxmtrx/colorflood/issues
 Homepage: http://github.com/ftrvxmtrx/colorflood/
-Description: Free 2D puzzle game.
+Description: Free clone of "Flood-It!" puzzle game.
  "Color Flood" is a free, opensource 2D game in which player selects colors to flood an area.
-

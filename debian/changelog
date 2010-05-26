@@ -1,3 +1,9 @@
+colorflood (0.4-2) stable; urgency=low
+
+  * debian: added Maemo-Display-Name and Maemo-Icon-26 fields, changed description
+
+ -- Serge Ziryukin <ftrvxmtrx@gmail.com>  Wed, 26 May 2010 17:51:04 +0300
+
 colorflood (0.4-1) stable; urgency=low
 
   * debian: update game url
