@@ -2,6 +2,7 @@ colorflood (0.4-3) stable; urgency=low
 
   * Add rotation support
   * Fix message box rotation on game end
+  * Fix help message box rotation
 
  -- Andrew Olmsted <andrew.olmsted@gmail.com>  Wed, 26 May 2010 16:25:39 -0400
 
