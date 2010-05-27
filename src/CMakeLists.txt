@@ -38,9 +38,9 @@ include(${QT_USE_FILE})
 qt4_wrap_cpp(moc_src ${moc})
 qt4_add_resources(resources resources/colorflood.qrc)
 
-add_definitions(-Wall -Wextra)
+add_definitions(-Wall -Wextra -I${QT_INCLUDE_DIR}/QtMaemo5)
 add_executable(colorflood ${moc_src} ${src} ${res})
-target_link_libraries(colorflood ${QT_LIBRARIES})
+target_link_libraries(colorflood ${QT_LIBRARIES} QtMaemo5)
 
 install(TARGETS colorflood DESTINATION bin)
 install(FILES resources/images/icon_48x48.png DESTINATION share/icons/hicolor/48x48/apps RENAME colorflood.png)
