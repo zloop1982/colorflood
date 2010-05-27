@@ -330,10 +330,10 @@ void Board::flood (int colorIndex)
 
     if (finished)
     {
-        QMessageBox *box = new QMessageBox(this);
-        box->setWindowTitle("Color Flood");
-        box->setText(msg);
-        box->exec();
+        QMessageBox box(this);
+        box.setWindowTitle("Color Flood");
+        box.setText(msg);
+        box.exec();
         randomize();
     }
 }
