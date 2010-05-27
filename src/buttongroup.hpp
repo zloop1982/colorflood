@@ -28,6 +28,8 @@ class ButtonGroup : public QGroupBox
 
 public:
     ButtonGroup (QWidget *parent);
+    void setPortrait();
+    void setLandscape();
 
 signals:
     /// flood with specific color

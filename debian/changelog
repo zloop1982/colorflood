@@ -1,3 +1,9 @@
+colorflood (0.4-3) stable; urgency=low
+
+  * Add rotation support
+
+ -- Andrew Olmsted <andrew.olmsted@gmail.com>  Wed, 26 May 2010 16:25:39 -0400
+
 colorflood (0.4-2) stable; urgency=low
 
   * debian: added Maemo-Display-Name and Maemo-Icon-26 fields, changed description

@@ -48,6 +48,8 @@ private slots:
     void help ();
     /// switch right/left-handed mode
     void handMode (bool toggle = true);
+    /// switch between portrait and landscape
+    void orientationChanged ();
 
 private:
     enum

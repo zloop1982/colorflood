@@ -23,6 +23,9 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QSizePolicy>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QDebug>
 #include "window.hpp"
 #include "buttongroup.hpp"
 #include "board.hpp"
@@ -36,6 +39,8 @@ Window::Window ()
 {
     setWindowTitle("Color Flood");
     setWindowIcon(QIcon(":/images/icon_48x48.png"));
+    setAttribute(Qt::WA_Maemo5AutoOrientation,true);
+    connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(orientationChanged()));
 
     int turns;
     board = new Board(this, &turns);
@@ -237,6 +242,23 @@ void Window::handMode (bool toggle)
         vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignBottom);
 
         hl->setDirection(QBoxLayout::LeftToRight);
+    }
+}
+
+void Window::orientationChanged()
+{
+    QRect screenGeometry = QApplication::desktop()->screenGeometry();
+    if (screenGeometry.width() > screenGeometry.height())
+    {
+        buttonGroup->setLandscape();
+        vl->setDirection(QBoxLayout::TopToBottom);
+        handMode(false);
+    }
+    else
+    {
+        buttonGroup->setPortrait();
+        vl->setDirection(QBoxLayout::BottomToTop);
+        hl->setDirection(QBoxLayout::TopToBottom);
     }
 }
 

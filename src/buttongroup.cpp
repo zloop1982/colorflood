@@ -47,3 +47,34 @@ ButtonGroup::ButtonGroup (QWidget *parent)
     layout->setSpacing(24);
     setLayout(layout);
 }
+
+void ButtonGroup::setPortrait()
+{
+    const QVector<QColor> &scheme = Scheme::instance().getScheme();
+    QGridLayout *newLayout = new QGridLayout;
+
+    delete layout();
+
+    for (int i = 0; i < scheme.size(); i++)
+    {
+        newLayout->addWidget(group.button(i), 0, i);
+    }
+
+    setLayout(newLayout);
+}
+
+void ButtonGroup::setLandscape()
+{
+    const QVector<QColor> &scheme = Scheme::instance().getScheme();
+    QGridLayout *newLayout = new QGridLayout;
+
+    delete layout();
+
+    for (int i = 0; i < scheme.size(); i++)
+    {
+        newLayout->addWidget(group.button(i), (i - (i % 3)) / 3, i % 3);
+    }
+
+    newLayout->setSpacing(24);
+    setLayout(newLayout);
+}
