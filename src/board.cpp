@@ -24,6 +24,7 @@
 #include <QPaintEvent>
 #include <QMessageBox>
 #include <QPropertyAnimation>
+#include <QMaemo5InformationBox>
 #include "board.hpp"
 #include "scheme.hpp"
 
@@ -330,10 +331,7 @@ void Board::flood (int colorIndex)
 
     if (finished)
     {
-        QMessageBox box(this);
-        box.setWindowTitle("Color Flood");
-        box.setText(msg);
-        box.exec();
+        QMaemo5InformationBox::information(this, msg, QMaemo5InformationBox::NoTimeout);
         randomize();
     }
 }

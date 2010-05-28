@@ -26,6 +26,8 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QDebug>
+#include <QTextBrowser>
+#include <QMaemo5InformationBox>
 #include "window.hpp"
 #include "buttongroup.hpp"
 #include "board.hpp"
@@ -198,13 +200,22 @@ void Window::scheme ()
 
 void Window::help ()
 {
-    QMessageBox box(this);
-    box.setWindowTitle("Color Flood");
-    box.setText(tr("The object of the game is to "
-                   "turn a board into one single color. "
-                   "Number of moves is limited. "
-                   "You start from top-left corner with one cell "
-                   "already flooded.\nGood luck!"));
+    QString msg = tr("The object of the game is to "
+                     "turn a board into one single color. "
+                     "Number of moves is limited. "
+                     "You start from top-left corner with one cell "
+                     "already flooded.\nGood luck!");
+
+    QMaemo5InformationBox box(this);
+    QTextBrowser textBrowser;
+    // cursorPositionChanged seems to be ugly, but how then?
+    connect(&textBrowser, SIGNAL(cursorPositionChanged()), &box, SLOT(close()));
+    textBrowser.setText(msg);
+    textBrowser.setStyleSheet("QTextEdit { background: transparent }");
+    textBrowser.setAlignment(Qt::AlignCenter);
+    textBrowser.setFrameShape(QFrame::NoFrame);
+    box.setWidget(&textBrowser);
+    box.setTimeout(QMaemo5InformationBox::NoTimeout);
     box.exec();
 }
 

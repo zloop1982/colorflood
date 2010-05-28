@@ -1,3 +1,9 @@
+colorflood (0.4-4) stable; urgency=low
+
+  * replace QMessageBox with QMaemo5InformationBox (based on patch by Andrew Olmsted)
+
+ -- Serge Ziryukin <ftrvxmtrx@gmail.com>  Fri, 28 May 2010 23:25:46 +0300
+
 colorflood (0.4-3) stable; urgency=low
 
   * Add rotation support
