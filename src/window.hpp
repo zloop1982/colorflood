@@ -65,6 +65,8 @@ private:
                     tr("Right-handed mode"));
         }
 
+    static bool isPortraitMode ();
+
     void updateBestResult (int newMinTurnsUsedToWin = 0);
     void updateGamesWonPlayed (bool played = false, bool won = false);
 

@@ -15,6 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -145,6 +146,9 @@ Window::Window ()
 
     // start it fullscreen
     showFullScreen();
+
+    // set proper orientation
+    orientationChanged();
 }
 
 void Window::updateGameState (int turns, bool gameFinished, bool won)
@@ -218,6 +222,13 @@ void Window::help ()
     box.exec();
 }
 
+bool Window::isPortraitMode ()
+{
+    QRect screenGeometry = QApplication::desktop()->screenGeometry();
+
+    return screenGeometry.width() < screenGeometry.height();
+}
+
 void Window::handMode (bool toggle)
 {
     if (toggle)
@@ -257,8 +268,7 @@ void Window::handMode (bool toggle)
 
 void Window::orientationChanged()
 {
-    QRect screenGeometry = QApplication::desktop()->screenGeometry();
-    if (screenGeometry.width() > screenGeometry.height())
+    if (!isPortraitMode())
     {
         buttonGroup->setLandscape();
         vl->setDirection(QBoxLayout::TopToBottom);
