@@ -25,7 +25,6 @@
 #include <QSizePolicy>
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QDebug>
 #include <QTextBrowser>
 #include <QMaemo5InformationBox>
 #include "window.hpp"
