@@ -221,7 +221,7 @@ void Board::floodNeighbours (quint8 color, int x, int y)
 
     if (x < s - 1)
         tryFloodRecurse(color, x + 1, y);
-        
+
     if (y < s - 1)
         tryFloodRecurse(color, x, y + 1);
 }
