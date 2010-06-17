@@ -1,6 +1,7 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
   <qresource>
+    <file>tr/de_DE.qm</file>
     <file>tr/ru_RU.qm</file>
     <file>images/icon_48x48.png</file>
   </qresource>
