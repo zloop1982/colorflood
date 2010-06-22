@@ -62,7 +62,6 @@ public:
     /// set new board size and randomize cells
     void setSize (int size);
 
-    static int getWidthInCells (BoardSize size);
     static int getNumTurnsOfSize (BoardSize size);
 
     void setAnimatedFlood (QColor color);

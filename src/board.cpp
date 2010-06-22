@@ -112,11 +112,7 @@ Board::~Board ()
         QSettings settings;
 
         settings.setValue("board/size", size);
-
-        QVariant v;
-        v.setValue(cells);
-        settings.setValue("board/cells", v);
-
+        settings.setValue("board/cells", QVariant::fromValue(cells));
         settings.setValue("board/turns", turns);
     }
 }
@@ -167,11 +163,6 @@ void Board::randomize ()
     floodNeighbours(cells[0].color, 0, 0);
 
     update();
-}
-
-int Board::getWidthInCells (BoardSize size)
-{
-    return boardWidthInCells[size];
 }
 
 int Board::getNumTurnsOfSize (BoardSize size)
