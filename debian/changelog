@@ -1,3 +1,9 @@
+colorflood (0.5-1) stable; urgency=low
+
+  * redo portrait mode layouting
+
+ -- Serge Ziryukin <ftrvxmtrx@gmail.com>  Wed, 23 Jun 2010 00:58:01 +0300
+
 colorflood (0.4-5) stable; urgency=low
 
   * German translation by Falko Thomale
