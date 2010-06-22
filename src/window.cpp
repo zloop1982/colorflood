@@ -269,13 +269,13 @@ void Window::orientationChanged()
 {
     if (!isPortraitMode())
     {
-        buttonGroup->setLandscape();
+        buttonGroup->rearrangeButtons(false);
         vl->setDirection(QBoxLayout::TopToBottom);
         handMode(false);
     }
     else
     {
-        buttonGroup->setPortrait();
+        buttonGroup->rearrangeButtons(true);
         vl->setDirection(QBoxLayout::BottomToTop);
         hl->setDirection(QBoxLayout::TopToBottom);
     }

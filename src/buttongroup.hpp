@@ -28,8 +28,8 @@ class ButtonGroup : public QGroupBox
 
 public:
     ButtonGroup (QWidget *parent);
-    void setPortrait();
-    void setLandscape();
+    /// rearrange buttons according to current orientation
+    void rearrangeButtons (bool portraitMode);
 
 signals:
     /// flood with specific color

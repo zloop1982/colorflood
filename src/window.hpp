@@ -34,6 +34,7 @@ class Window : public QWidget
 
 public:
     Window ();
+    static bool isPortraitMode ();
 
 private slots:
     /// update game state
@@ -64,8 +65,6 @@ private:
                     tr("Left-handed mode") :
                     tr("Right-handed mode"));
         }
-
-    static bool isPortraitMode ();
 
     void updateBestResult (int newMinTurnsUsedToWin = 0);
     void updateGamesWonPlayed (bool played = false, bool won = false);

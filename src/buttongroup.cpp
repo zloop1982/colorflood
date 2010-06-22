@@ -16,13 +16,11 @@
 */
 
 #include <QColor>
-#include <QPainter>
-#include <QPixmap>
-#include <QPushButton>
 #include <QGridLayout>
 #include "buttongroup.hpp"
 #include "scheme.hpp"
 #include "button.hpp"
+#include "window.hpp"
 
 ButtonGroup::ButtonGroup (QWidget *parent)
     : QGroupBox(parent)
@@ -30,25 +28,19 @@ ButtonGroup::ButtonGroup (QWidget *parent)
     Q_ASSERT(parent);
 
     const QVector<QColor> &scheme = Scheme::instance().getScheme();
-    QGridLayout *layout = new QGridLayout;
 
     for (int i = 0; i < scheme.size(); i++)
     {
         Button *button = new Button(this, i);
-        layout->addWidget(button, (i - (i % 3)) / 3, i % 3);
         group.addButton(button, i);
     }
 
-    QObject::connect(&group,
-                     SIGNAL(buttonClicked(int)),
-                     this,
-                     SIGNAL(flood(int)));
+    QObject::connect(&group, SIGNAL(buttonClicked(int)), this, SIGNAL(flood(int)));
 
-    layout->setSpacing(24);
-    setLayout(layout);
+    rearrangeButtons(Window::isPortraitMode());
 }
 
-void ButtonGroup::setPortrait()
+void ButtonGroup::rearrangeButtons (bool portraitMode)
 {
     const QVector<QColor> &scheme = Scheme::instance().getScheme();
     QGridLayout *newLayout = new QGridLayout;
@@ -57,22 +49,10 @@ void ButtonGroup::setPortrait()
 
     for (int i = 0; i < scheme.size(); i++)
     {
-        newLayout->addWidget(group.button(i), 0, i);
-    }
+        int x = portraitMode ? 0 : (i - (i % 3)) / 3;
+        int y = portraitMode ? i : (i % 3);
 
-    setLayout(newLayout);
-}
-
-void ButtonGroup::setLandscape()
-{
-    const QVector<QColor> &scheme = Scheme::instance().getScheme();
-    QGridLayout *newLayout = new QGridLayout;
-
-    delete layout();
-
-    for (int i = 0; i < scheme.size(); i++)
-    {
-        newLayout->addWidget(group.button(i), (i - (i % 3)) / 3, i % 3);
+        newLayout->addWidget(group.button(i), x, y);
     }
 
     newLayout->setSpacing(24);
