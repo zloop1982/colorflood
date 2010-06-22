@@ -24,8 +24,9 @@ class ButtonGroup;
 class Board;
 class QLabel;
 class QAction;
-class QHBoxLayout;
-class QVBoxLayout;
+class QBoxLayout;
+class QPushButton;
+class FullScreenToggleButton;
 
 /// main window class
 class Window : public QWidget
@@ -34,7 +35,6 @@ class Window : public QWidget
 
 public:
     Window ();
-    static bool isPortraitMode ();
 
 private slots:
     /// update game state
@@ -66,8 +66,13 @@ private:
                     tr("Right-handed mode"));
         }
 
+    static bool isPortraitMode ();
+
     void updateBestResult (int newMinTurnsUsedToWin = 0);
     void updateGamesWonPlayed (bool played = false, bool won = false);
+
+    void layoutLandscape ();
+    void layoutPortrait ();
 
     ButtonGroup *buttonGroup;
     Board *board;
@@ -78,10 +83,13 @@ private:
     QAction *more;
     QAction *hand;
 
-    QHBoxLayout *lowerLayout;
-    QVBoxLayout *statsLayout;
-    QHBoxLayout *hl;
-    QVBoxLayout *vl;
+    QBoxLayout *lowerLayout;
+    QBoxLayout *statsLayout;
+    QBoxLayout *hl;
+    QBoxLayout *vl;
+
+    QPushButton *newGame;
+    FullScreenToggleButton *fsButton;
 
     int minTurnsUsedToWin;
     int gamesWon;

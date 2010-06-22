@@ -35,6 +35,10 @@
 
 Window::Window ()
     : QWidget(),
+      lowerLayout(0),
+      statsLayout(0),
+      hl(0),
+      vl(0),
       gamesWon(0),
       gamesPlayed(0)
 {
@@ -71,37 +75,14 @@ Window::Window ()
     updateGamesWonPlayed();
 
     // 'fullscreen toggle'/'new game' buttons
-    QPushButton *newGame = new QPushButton(tr("New game"), this);
+    newGame = new QPushButton(tr("New game"), this);
     QObject::connect(newGame, SIGNAL(pressed()), board, SLOT(randomize()));
 
-    FullScreenToggleButton *fsButton = new FullScreenToggleButton(this);
+    fsButton = new FullScreenToggleButton(this);
 
-    // layouts
-    lowerLayout = new QHBoxLayout;
-    lowerLayout->addWidget(newGame);
-    lowerLayout->addWidget(fsButton);
-
-    statsLayout = new QVBoxLayout;
-    statsLayout->addWidget(turnsLabel);
-    statsLayout->addWidget(minTurnsWinLabel);
-    statsLayout->addWidget(gamesWonPlayedLabel);
-
-    vl = new QVBoxLayout;
-    vl->addWidget(buttonGroup);
-    vl->addLayout(statsLayout);
-    vl->addLayout(lowerLayout);
-
-    hl = new QHBoxLayout;
-    hl->addWidget(board);
-    hl->setAlignment(board, Qt::AlignLeft);
-    hl->addLayout(vl);
-
-    setLayout(hl);
-
-    // rearrange layouting based on hand mode
+    // layouting based on hand mode
     QSettings settings;
     currentHand = settings.value("hand", HAND_RIGHT).toInt();
-    handMode(false);
 
     // menu bar
     QMenuBar *bar = new QMenuBar(this);
@@ -143,11 +124,11 @@ Window::Window ()
     else if (board->getSize() == Board::NUM_SIZES - 1)
         more->setEnabled(false);
 
+    // layouts
+    orientationChanged();
+
     // start it fullscreen
     showFullScreen();
-
-    // set proper orientation
-    orientationChanged();
 }
 
 void Window::updateGameState (int turns, bool gameFinished, bool won)
@@ -230,6 +211,9 @@ bool Window::isPortraitMode ()
 
 void Window::handMode (bool toggle)
 {
+    if (isPortraitMode())
+        return;
+
     if (toggle)
     {
         currentHand = (HAND_RIGHT == currentHand) ? HAND_LEFT : HAND_RIGHT;
@@ -245,8 +229,8 @@ void Window::handMode (bool toggle)
         statsLayout->setAlignment(minTurnsWinLabel, Qt::AlignLeft);
         statsLayout->setAlignment(gamesWonPlayedLabel, Qt::AlignLeft);
 
-        vl->setAlignment(buttonGroup, Qt::AlignLeft | Qt::AlignTop);
-        vl->setAlignment(statsLayout, Qt::AlignLeft | Qt::AlignBottom);
+        vl->setAlignment(buttonGroup, Qt::AlignLeft | Qt::AlignCenter);
+        vl->setAlignment(statsLayout, Qt::AlignLeft | Qt::AlignCenter);
         vl->setAlignment(lowerLayout, Qt::AlignLeft | Qt::AlignBottom);
 
         hl->setDirection(QBoxLayout::RightToLeft);
@@ -257,28 +241,74 @@ void Window::handMode (bool toggle)
         statsLayout->setAlignment(minTurnsWinLabel, Qt::AlignRight);
         statsLayout->setAlignment(gamesWonPlayedLabel, Qt::AlignRight);
 
-        vl->setAlignment(buttonGroup, Qt::AlignRight | Qt::AlignTop);
-        vl->setAlignment(statsLayout, Qt::AlignRight | Qt::AlignBottom);
+        vl->setAlignment(buttonGroup, Qt::AlignRight | Qt::AlignCenter);
+        vl->setAlignment(statsLayout, Qt::AlignRight | Qt::AlignCenter);
         vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignBottom);
 
         hl->setDirection(QBoxLayout::LeftToRight);
     }
 }
 
-void Window::orientationChanged()
+void Window::layoutLandscape ()
 {
+    hand->setEnabled(true);
+
+    newGame->setFixedSize(newGame->sizeHint());
+
+    vl = new QVBoxLayout;
+    vl->addWidget(buttonGroup);
+    vl->addLayout(statsLayout);
+    vl->addLayout(lowerLayout);
+
+    hl = new QHBoxLayout;
+    hl->addWidget(board);
+    hl->addLayout(vl);
+
+    handMode(false);
+}
+
+void Window::layoutPortrait ()
+{
+    hand->setEnabled(false);
+
+    vl = new QHBoxLayout;
+    vl->addLayout(statsLayout);
+    vl->setAlignment(statsLayout, Qt::AlignLeft | Qt::AlignCenter);
+    vl->addLayout(lowerLayout);
+    vl->setAlignment(lowerLayout, Qt::AlignRight | Qt::AlignCenter);
+
+    hl = new QVBoxLayout;
+    hl->addWidget(board);
+    hl->setAlignment(board, Qt::AlignTop | Qt::AlignCenter);
+    hl->addLayout(vl);
+    hl->setAlignment(buttonGroup, Qt::AlignRight);
+    hl->addWidget(buttonGroup);
+    hl->setAlignment(buttonGroup, Qt::AlignBottom | Qt::AlignCenter);
+}
+
+void Window::orientationChanged ()
+{
+    delete lowerLayout;
+    delete statsLayout;
+    delete vl;
+    delete hl;
+
+    lowerLayout = new QHBoxLayout;
+    lowerLayout->addWidget(newGame);
+    lowerLayout->addWidget(fsButton);
+    lowerLayout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+
+    statsLayout = new QVBoxLayout;
+    statsLayout->addWidget(turnsLabel);
+    statsLayout->addWidget(minTurnsWinLabel);
+    statsLayout->addWidget(gamesWonPlayedLabel);
+
     if (!isPortraitMode())
-    {
-        buttonGroup->rearrangeButtons(false);
-        vl->setDirection(QBoxLayout::TopToBottom);
-        handMode(false);
-    }
+        layoutLandscape();
     else
-    {
-        buttonGroup->rearrangeButtons(true);
-        vl->setDirection(QBoxLayout::BottomToTop);
-        hl->setDirection(QBoxLayout::TopToBottom);
-    }
+        layoutPortrait();
+
+    setLayout(hl);
 }
 
 void Window::updateBestResult (int newMinTurnsUsedToWin)

@@ -20,7 +20,6 @@
 #include "buttongroup.hpp"
 #include "scheme.hpp"
 #include "button.hpp"
-#include "window.hpp"
 
 ButtonGroup::ButtonGroup (QWidget *parent)
     : QGroupBox(parent)
@@ -28,33 +27,17 @@ ButtonGroup::ButtonGroup (QWidget *parent)
     Q_ASSERT(parent);
 
     const QVector<QColor> &scheme = Scheme::instance().getScheme();
+    QGridLayout *layout = new QGridLayout;
 
     for (int i = 0; i < scheme.size(); i++)
     {
         Button *button = new Button(this, i);
         group.addButton(button, i);
+        layout->addWidget(group.button(i), (i - (i % 3)) / 3, (i % 3));
     }
+
+    layout->setSpacing(24);
+    setLayout(layout);
 
     QObject::connect(&group, SIGNAL(buttonClicked(int)), this, SIGNAL(flood(int)));
-
-    rearrangeButtons(Window::isPortraitMode());
-}
-
-void ButtonGroup::rearrangeButtons (bool portraitMode)
-{
-    const QVector<QColor> &scheme = Scheme::instance().getScheme();
-    QGridLayout *newLayout = new QGridLayout;
-
-    delete layout();
-
-    for (int i = 0; i < scheme.size(); i++)
-    {
-        int x = portraitMode ? 0 : (i - (i % 3)) / 3;
-        int y = portraitMode ? i : (i % 3);
-
-        newLayout->addWidget(group.button(i), x, y);
-    }
-
-    newLayout->setSpacing(24);
-    setLayout(newLayout);
 }
