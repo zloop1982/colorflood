@@ -67,9 +67,10 @@ static QDataStream &operator>> (QDataStream &in, Board::CellVector &rv)
     return in;
 }
 
-Board::Board (QWidget *parent, int *turns)
-    : QWidget (parent),
-      finished(false)
+Board::Board (QWidget *parent, bool liveWallpaper, int *turns)
+    : QWidget(parent),
+      finished(false),
+      liveWallpaper(liveWallpaper)
 {
     Q_ASSERT(parent);
 
@@ -321,7 +322,9 @@ void Board::flood (int colorIndex)
 
     if (finished)
     {
-        QMaemo5InformationBox::information(this, msg, QMaemo5InformationBox::NoTimeout);
+        QMaemo5InformationBox::information(liveWallpaper ? NULL : this,
+                                           msg,
+                                           QMaemo5InformationBox::NoTimeout);
         randomize();
     }
 }

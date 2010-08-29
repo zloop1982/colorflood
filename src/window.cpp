@@ -40,7 +40,8 @@ Window::Window ()
       hl(0),
       vl(0),
       gamesWon(0),
-      gamesPlayed(0)
+      gamesPlayed(0),
+      liveWallpaper(QCoreApplication::arguments().contains("--livewallpaper"))
 {
     setWindowTitle("Color Flood");
     setWindowIcon(QIcon(":/images/icon_48x48.png"));
@@ -48,7 +49,7 @@ Window::Window ()
     connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(orientationChanged()));
 
     int turns;
-    board = new Board(this, &turns);
+    board = new Board(this, liveWallpaper, &turns);
     buttonGroup = new ButtonGroup(this);
 
     QObject::connect(buttonGroup,
@@ -78,7 +79,7 @@ Window::Window ()
     newGame = new QPushButton(tr("New game"), this);
     QObject::connect(newGame, SIGNAL(pressed()), board, SLOT(randomize()));
 
-    fsButton = new FullScreenToggleButton(this);
+    fsButton = liveWallpaper ? NULL : new FullScreenToggleButton(this);
 
     // layouting based on hand mode
     QSettings settings;
@@ -256,12 +257,20 @@ void Window::layoutLandscape ()
     newGame->setFixedSize(newGame->sizeHint());
 
     vl = new QVBoxLayout;
+
+    if (liveWallpaper)
+        vl->addSpacing(50);
+
     vl->addWidget(buttonGroup);
     vl->addLayout(statsLayout);
     vl->addLayout(lowerLayout);
 
     hl = new QHBoxLayout;
     hl->addWidget(board);
+
+    if (liveWallpaper)
+        hl->setAlignment(board, Qt::AlignBottom | Qt::AlignCenter);
+
     hl->addLayout(vl);
 
     handMode(false);
@@ -295,7 +304,10 @@ void Window::orientationChanged ()
 
     lowerLayout = new QHBoxLayout;
     lowerLayout->addWidget(newGame);
-    lowerLayout->addWidget(fsButton);
+
+    if (fsButton)
+        lowerLayout->addWidget(fsButton);
+
     lowerLayout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
     statsLayout = new QVBoxLayout;

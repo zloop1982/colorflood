@@ -95,6 +95,7 @@ private:
     int gamesWon;
     int gamesPlayed;
     int currentHand;
+    bool liveWallpaper;
 };
 
 #endif // !_WINDOW_HPP

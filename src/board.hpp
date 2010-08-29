@@ -54,7 +54,7 @@ public:
 
     typedef QVector<Board::Cell> CellVector;
 
-    Board (QWidget *parent, int *turns);
+    Board (QWidget *parent, bool liveWallpaper, int *turns);
     ~Board ();
 
     /// get board size
@@ -80,10 +80,11 @@ private:
     /// flood neighbouring cells
     void floodNeighbours (quint8 color, int x, int y);
 
-    BoardSize  size;     ///< board size
-    CellVector cells;    ///< cells data
-    int        turns;    ///< number of turns used
-    bool       finished; ///< 'game finished' flag
+    BoardSize  size;          ///< board size
+    CellVector cells;         ///< cells data
+    int        turns;         ///< number of turns used
+    bool       finished;      ///< 'game finished' flag
+    bool       liveWallpaper; ///< LiveWallpaper mode
     QColor     animatedFlood;
     QPropertyAnimation *animate;
 

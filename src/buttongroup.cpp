@@ -39,5 +39,5 @@ ButtonGroup::ButtonGroup (QWidget *parent)
     layout->setSpacing(24);
     setLayout(layout);
 
-    QObject::connect(&group, SIGNAL(buttonClicked(int)), this, SIGNAL(flood(int)));
+    QObject::connect(&group, SIGNAL(buttonPressed(int)), this, SIGNAL(flood(int)));
 }
