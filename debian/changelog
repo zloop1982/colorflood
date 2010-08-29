@@ -1,3 +1,9 @@
+colorflood (0.6-1) stable; urgency=low
+
+  * livewallpaper mode
+
+ -- Serge Ziryukin <ftrvxmtrx@gmail.com>  Sun, 29 Aug 2010 22:16:36 +0300
+
 colorflood (0.5-1) stable; urgency=low
 
   * redo portrait mode layouting
