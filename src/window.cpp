@@ -26,7 +26,9 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QTextBrowser>
+#ifdef Q_WS_MAEMO_5
 #include <QMaemo5InformationBox>
+#endif
 #include "window.hpp"
 #include "buttongroup.hpp"
 #include "board.hpp"
@@ -45,7 +47,9 @@ Window::Window ()
 {
     setWindowTitle("Color Flood");
     setWindowIcon(QIcon(":/images/icon_48x48.png"));
+#ifdef Q_WS_MAEMO_5
     setAttribute(Qt::WA_Maemo5AutoOrientation,true);
+#endif
     connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(orientationChanged()));
 
     int turns;
@@ -190,6 +194,7 @@ void Window::help ()
                      "You start from top-left corner with one cell "
                      "already flooded.\nGood luck!");
 
+#ifdef Q_WS_MAEMO_5
     QMaemo5InformationBox box(this);
     QTextBrowser textBrowser;
     // cursorPositionChanged seems to be ugly, but how then?
@@ -200,6 +205,11 @@ void Window::help ()
     textBrowser.setFrameShape(QFrame::NoFrame);
     box.setWidget(&textBrowser);
     box.setTimeout(QMaemo5InformationBox::NoTimeout);
+#else
+    QMessageBox box(this);
+    box.setWindowTitle("Color Flood");
+    box.setText(msg);
+#endif
     box.exec();
 }
 
