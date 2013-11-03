@@ -22,16 +22,16 @@
 #include "button.hpp"
 
 ButtonGroup::ButtonGroup (QWidget *parent)
-    : QGroupBox(parent)
+    : QGroupBox{parent}
 {
     Q_ASSERT(parent);
 
-    const QVector<QColor> &scheme = Scheme::instance().getScheme();
-    QGridLayout *layout = new QGridLayout;
+    auto scheme = Scheme::instance().getScheme();
+	auto layout = new QGridLayout;
 
-    for (int i = 0; i < scheme.size(); i++)
+    for (auto i = 0; i < scheme.size(); i++)
     {
-        Button *button = new Button(this, i);
+        auto button = new Button(this, i);
         group.addButton(button, i);
         layout->addWidget(group.button(i), (i - (i % 3)) / 3, (i % 3));
     }

@@ -36,13 +36,7 @@
 #include "scheme.hpp"
 
 Window::Window ()
-    : QWidget(),
-      lowerLayout(0),
-      statsLayout(0),
-      hl(0),
-      vl(0),
-      gamesWon(0),
-      gamesPlayed(0),
+    : QWidget{},
       liveWallpaper(QCoreApplication::arguments().contains("--livewallpaper"))
 {
     setWindowTitle("Color Flood");
@@ -83,14 +77,14 @@ Window::Window ()
     newGame = new QPushButton(tr("New game"), this);
     QObject::connect(newGame, SIGNAL(pressed()), board, SLOT(randomize()));
 
-    fsButton = liveWallpaper ? NULL : new FullScreenToggleButton(this);
+    fsButton = liveWallpaper ? nullptr : new FullScreenToggleButton(this);
 
     // layouting based on hand mode
     QSettings settings;
     currentHand = settings.value("hand", HAND_RIGHT).toInt();
 
     // menu bar
-    QMenuBar *bar = new QMenuBar(this);
+    auto bar = new QMenuBar(this);
 
     QObject::connect(bar->addAction(tr("Help")),
                      SIGNAL(triggered()),
@@ -152,7 +146,7 @@ void Window::updateGameState (int turns, bool gameFinished, bool won)
 
 void Window::lessCells ()
 {
-    int s = board->getSize() - 1;
+    auto s = board->getSize() - 1;
 
     board->setSize(s);
     more->setEnabled(true);
@@ -164,7 +158,7 @@ void Window::lessCells ()
 
 void Window::moreCells ()
 {
-    int s = board->getSize() + 1;
+    auto s = board->getSize() + 1;
 
     board->setSize(s);
     less->setEnabled(true);
@@ -176,7 +170,7 @@ void Window::moreCells ()
 
 void Window::scheme ()
 {
-    QAction *action = static_cast<typeof(action)>(QObject::sender());
+    auto action = static_cast<QAction*>(QObject::sender());
 
     Scheme::setScheme(Scheme::getNextScheme());
 
@@ -188,7 +182,7 @@ void Window::scheme ()
 
 void Window::help ()
 {
-    QString msg = tr("The object of the game is to "
+    auto msg = tr("The object of the game is to "
                      "turn a board into one single color. "
                      "Number of moves is limited. "
                      "You start from top-left corner with one cell "
@@ -215,7 +209,7 @@ void Window::help ()
 
 bool Window::isPortraitMode ()
 {
-    QRect screenGeometry = QApplication::desktop()->screenGeometry();
+    auto screenGeometry = QApplication::desktop()->screenGeometry();
 
     return screenGeometry.width() < screenGeometry.height();
 }
@@ -336,9 +330,9 @@ void Window::orientationChanged ()
 void Window::updateBestResult (int newMinTurnsUsedToWin)
 {
     QSettings settings;
-    Board::BoardSize size = board->getSize();
-    QString property = QString("stats/minTurnsUsedToWin%1").arg(size);
-    int maxTurns = board->getNumTurnsOfSize(size);
+    auto size = board->getSize();
+    auto property = QString("stats/minTurnsUsedToWin%1").arg(size);
+    auto maxTurns = board->getNumTurnsOfSize(size);
 
     if (newMinTurnsUsedToWin)
     {
@@ -363,8 +357,8 @@ void Window::updateGamesWonPlayed (bool played, bool won)
 {
     QSettings settings;
     Board::BoardSize size = board->getSize();
-    QString wonProperty = QString("stats/gamesWon%1").arg(size);
-    QString playedProperty = QString("stats/gamesPlayed%1").arg(size);
+    auto wonProperty = QString("stats/gamesWon%1").arg(size);
+    auto playedProperty = QString("stats/gamesPlayed%1").arg(size);
 
     if (!played && !won)
     {

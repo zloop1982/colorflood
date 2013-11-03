@@ -15,8 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _BUTTONGROUP_HPP
-#define _BUTTONGROUP_HPP
+#pragma once
 
 #include <QGroupBox>
 #include <QButtonGroup>
@@ -36,5 +35,3 @@ signals:
 private:
     QButtonGroup group;
 };
-
-#endif // !_BUTTONGROUP_HPP

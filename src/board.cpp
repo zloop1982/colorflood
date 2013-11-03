@@ -41,13 +41,8 @@ Q_DECLARE_METATYPE(Board::CellVector);
 
 static QDataStream &operator<< (QDataStream &out, const Board::CellVector &rv)
 {
-    for (QVector<Board::Cell>::const_iterator cell = rv.begin();
-         cell != rv.end();
-         cell++)
-    {
-        out << (*cell).color;
-        out << (*cell).flood;
-    }
+    for (auto &cell: rv)
+        out << cell.color << cell.flood;
 
     return out;
 }
@@ -70,9 +65,9 @@ static QDataStream &operator>> (QDataStream &in, Board::CellVector &rv)
 }
 
 Board::Board (QWidget *parent, bool liveWallpaper, int *turns)
-    : QWidget(parent),
-      finished(false),
-      liveWallpaper(liveWallpaper)
+    : QWidget{parent},
+      finished{false},
+      liveWallpaper{liveWallpaper}
 {
     Q_ASSERT(parent);
 
@@ -85,7 +80,7 @@ Board::Board (QWidget *parent, bool liveWallpaper, int *turns)
 
     QSettings settings;
 
-    int size = settings.value("board/size", SIZE_SMALL).toInt();
+    auto size = settings.value("board/size", SIZE_SMALL).toInt();
 
     if (size < SIZE_SMALL || size >= NUM_SIZES)
         size = SIZE_SMALL;
@@ -100,9 +95,10 @@ Board::Board (QWidget *parent, bool liveWallpaper, int *turns)
     if (cells.size() != boardWidthInCells[size] * boardWidthInCells[size])
         randomize();
 
-    *turns = this->turns;
+	if(turns != nullptr)
+    	*turns = this->turns;
 
-    const QVector<QColor> &scheme = Scheme::instance().getScheme();
+    auto scheme = Scheme::instance().getScheme();
     animatedFlood = scheme.at(cells[0].color);
     animate = new QPropertyAnimation(this, "animatedFlood", this);
     animate->setDuration(150);
@@ -138,23 +134,18 @@ void Board::setSize (int size)
 
 void Board::randomize ()
 {
-    Cell cell;
-
-    cell.color = 0;
-    cell.flood = false;
+    auto cell = Cell{0, false, false};
 
     cells.clear();
     cells = CellVector(boardWidthInCells[size] * boardWidthInCells[size], cell);
 
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
 
-    int numColors = Scheme::instance().getScheme().size();
+    auto numColors = Scheme::instance().getScheme().size();
 
-    for (QVector<Cell>::iterator cell = cells.begin();
-         cell != cells.end();
-         cell++)
+    for (auto &cell : cells)
     {
-        (*cell).color = qrand() % numColors;
+        cell.color = qrand() % numColors;
     }
 
     turns = 0;
@@ -191,7 +182,7 @@ void Board::setAnimatedFlood (QColor color)
 
 void Board::tryFloodRecurse (quint8 color, int x, int y)
 {
-    Cell &cell = cells[x + y*boardWidthInCells[size]];
+    auto &cell = cells[x + y*boardWidthInCells[size]];
 
     if (!cell.flood && cell.color == color)
     {
@@ -203,7 +194,7 @@ void Board::tryFloodRecurse (quint8 color, int x, int y)
 
 void Board::floodNeighbours (quint8 color, int x, int y)
 {
-    int s = boardWidthInCells[size];
+    auto s = boardWidthInCells[size];
 
     cells[x + y*s].color = color;
 
@@ -225,13 +216,13 @@ void Board::paintEvent (QPaintEvent *event)
     QPainter painter;
     painter.begin(this);
 
-    QRect cell = QRect(0, 0, getCellSize(size), getCellSize(size));
-    const QVector<QColor> &scheme = Scheme::instance().getScheme();
-    bool animating = (QAbstractAnimation::Running == animate->state());
+    auto cell = QRect(0, 0, getCellSize(size), getCellSize(size));
+    auto &scheme = Scheme::instance().getScheme();
+    auto animating = (QAbstractAnimation::Running == animate->state());
 
-    for (int y = 0; y < boardWidthInCells[size] ;y++)
+    for (auto y = 0; y < boardWidthInCells[size] ;y++)
     {
-        int n = y * boardWidthInCells[size];
+        auto n = y * boardWidthInCells[size];
 
         for (int x = 0; x < boardWidthInCells[size] ;x++, n++)
         {
@@ -261,42 +252,40 @@ void Board::flood (int colorIndex)
 
     turns++;
 
-    int oldColor = cells[0].color;
+    auto oldColor = cells[0].color;
 
     // clear 'fresh' flag
-    for (int y = 0; y < boardWidthInCells[size] ;y++)
+    for (auto y = 0; y < boardWidthInCells[size] ;y++)
     {
-        int n = y * boardWidthInCells[size];
+        auto n = y * boardWidthInCells[size];
 
-        for (int x = 0; x < boardWidthInCells[size] ;x++, n++)
+        for (auto x = 0; x < boardWidthInCells[size] ;x++, n++)
             cells[n].fresh = false;
     }
 
     // flood with new color
-    for (int y = 0; y < boardWidthInCells[size] ;y++)
+    for (auto y = 0; y < boardWidthInCells[size] ;y++)
     {
-        int n = y * boardWidthInCells[size];
+        auto n = y * boardWidthInCells[size];
 
-        for (int x = 0; x < boardWidthInCells[size] ;x++, n++)
+        for (auto x = 0; x < boardWidthInCells[size] ;x++, n++)
         {
             if (cells[n].flood)
                 floodNeighbours(colorIndex, x, y);
         }
     }
 
-    const QVector<QColor> &scheme = Scheme::instance().getScheme();
+    auto scheme = Scheme::instance().getScheme();
     animate->setStartValue(scheme.at(oldColor));
     animate->setEndValue(scheme.at(colorIndex));
     animate->start();
 
-    bool allFlooded = true;
+    auto allFlooded = true;
 
     // check if all board flooded
-    for (QVector<Board::Cell>::const_iterator cell = cells.begin();
-         cell != cells.end();
-         cell++)
+    for (auto &cell : cells)
     {
-        if (!(*cell).flood)
+        if (!cell.flood)
         {
             allFlooded = false;
             break;
@@ -325,7 +314,7 @@ void Board::flood (int colorIndex)
     if (finished)
     {
 #ifdef Q_WS_MAEMO_5
-        QMaemo5InformationBox::information(liveWallpaper ? NULL : this,
+        QMaemo5InformationBox::information(liveWallpaper ? nullptr : this,
                                            msg,
                                            QMaemo5InformationBox::NoTimeout);
 #else

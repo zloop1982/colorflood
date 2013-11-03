@@ -20,8 +20,8 @@
 #include "scheme.hpp"
 
 Button::Button (QWidget *parent, int colorIndex)
-    : QPushButton(parent),
-      colorIndex(colorIndex)
+    : QPushButton{parent},
+      colorIndex{colorIndex}
 {
     setFixedSize(buttonWidthInPixels, buttonWidthInPixels);
 }
@@ -31,7 +31,7 @@ void Button::paintEvent (QPaintEvent * /* event */)
     QPainter painter;
     painter.begin(this);
 
-    const QVector<QColor> &scheme = Scheme::instance().getScheme();
+    auto scheme = Scheme::instance().getScheme();
     painter.setBrush(scheme.at(colorIndex));
 
     painter.setRenderHint(QPainter::Antialiasing);

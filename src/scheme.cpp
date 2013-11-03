@@ -18,36 +18,37 @@
 #include <QSettings>
 #include "scheme.hpp"
 
+using Colors = QVector<QColor>;
 static int currentScheme = 0;
-static QVector<QPair<QString, QVector<QColor> > > schemes;
+static QVector<QPair<QString, Colors>> schemes;
 
 Scheme::Scheme ()
 {
     schemes.clear();
 
-    QVector<QColor> s;
-
-    s << QColor(0x60, 0x60, 0xa8);
-    s << QColor(0xf6, 0xf6, 0x1d);
-    s << QColor(0x46, 0xb0, 0xe0);
-    s << QColor(0x7e, 0xa0, 0x20);
-    s << QColor(0xf0, 0x70, 0xa0);
-    s << QColor(0xdc, 0x4a, 0x20);
+    Colors s = {
+        {0x60, 0x60, 0xa8},
+        {0xf6, 0xf6, 0x1d},
+        {0x46, 0xb0, 0xe0},
+        {0x7e, 0xa0, 0x20},
+        {0xf0, 0x70, 0xa0},
+        {0xdc, 0x4a, 0x20}
+    };
     /*: default scheme name */
-    schemes << QPair<QString, QVector<QColor> >(QObject::tr("Default scheme"), s);
+    schemes << QPair<QString, decltype(s) >(QObject::tr("Default scheme"), s);
 
-    s.clear();
-    s << QColor(0x00, 0x00, 0x00);
-    s << QColor(0x20, 0x20, 0x20);
-    s << QColor(0x66, 0x66, 0x66);
-    s << QColor(0x99, 0x99, 0x99);
-    s << QColor(0xcc, 0xcc, 0xcc);
-    s << QColor(0xff, 0xff, 0xff);
+    s = {
+        {0x00, 0x00, 0x00},
+        {0x20, 0x20, 0x20},
+        {0x66, 0x66, 0x66},
+        {0x99, 0x99, 0x99},
+        {0xcc, 0xcc, 0xcc},
+        {0xff, 0xff, 0xff}
+    };
     /*: black-and-white scheme name */
-    schemes << QPair<QString, QVector<QColor> >(QObject::tr("Black-and-white scheme"), s);
+    schemes << QPair<QString, decltype(s)>(QObject::tr("Black-and-white scheme"), s);
 
-    QSettings settings;
-    currentScheme = settings.value("scheme", 0).toInt();
+    currentScheme = QSettings().value("scheme", 0).toInt();
 
     if (currentScheme < 0 || currentScheme > s.size())
         currentScheme = 0;
@@ -55,8 +56,7 @@ Scheme::Scheme ()
 
 Scheme::~Scheme ()
 {
-    QSettings settings;
-    settings.setValue("scheme", currentScheme);
+    QSettings().setValue("scheme", currentScheme);
 }
 
 int Scheme::getNumSchemes ()
@@ -75,7 +75,7 @@ QString Scheme::getSchemeName (int scheme)
     return schemes.at(scheme).first;
 }
 
-const QVector<QColor> &Scheme::getScheme (int scheme)
+const Colors &Scheme::getScheme (int scheme)
 {
     Q_ASSERT(scheme > 0 && scheme < getNumSchemes());
     return schemes.at(scheme).second;
@@ -86,7 +86,7 @@ QString Scheme::getSchemeName ()
     return schemes.at(currentScheme).first;
 }
 
-const QVector<QColor> &Scheme::getScheme ()
+const Colors &Scheme::getScheme ()
 {
     return schemes.at(currentScheme).second;
 }

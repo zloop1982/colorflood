@@ -15,8 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _WINDOW_HPP
-#define _WINDOW_HPP
+#pragma once
 
 #include <QWidget>
 
@@ -83,19 +82,17 @@ private:
     QAction *more;
     QAction *hand;
 
-    QBoxLayout *lowerLayout;
-    QBoxLayout *statsLayout;
-    QBoxLayout *hl;
-    QBoxLayout *vl;
+    QBoxLayout *lowerLayout = nullptr;
+    QBoxLayout *statsLayout = nullptr;
+    QBoxLayout *hl = nullptr;
+    QBoxLayout *vl = nullptr;
 
     QPushButton *newGame;
     FullScreenToggleButton *fsButton;
 
     int minTurnsUsedToWin;
-    int gamesWon;
-    int gamesPlayed;
+    int gamesWon = 0;
+    int gamesPlayed = 0;
     int currentHand;
     bool liveWallpaper;
 };
-
-#endif // !_WINDOW_HPP

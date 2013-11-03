@@ -15,8 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _SCHEME_HPP
-#define _SCHEME_HPP
+#pragma once
 
 #include <QVector>
 #include <QPair>
@@ -54,5 +53,3 @@ private:
     Scheme (const Scheme &);
     Scheme & operator= (const Scheme &);
 };
-
-#endif // !_SCHEME_HPP

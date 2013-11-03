@@ -15,8 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _BOARD_HPP
-#define _BOARD_HPP
+#pragma once
 
 #include <QWidget>
 #include <QVector>
@@ -41,7 +40,7 @@ public:
         SIZE_SMALL = 0, ///< 14x14, 25 turns
         SIZE_NORMAL,    ///< 21x21, 35 turns
         SIZE_LARGE,     ///< 28x28, 50 turns
-        NUM_SIZES
+        NUM_SIZES,
     }BoardSize;
 
     /// cell type
@@ -52,7 +51,7 @@ public:
         bool   fresh; ///< 'just filled' flag
     }Cell;
 
-    typedef QVector<Board::Cell> CellVector;
+    using CellVector = QVector<Board::Cell>;
 
     Board (QWidget *parent, bool liveWallpaper, int *turns);
     ~Board ();
@@ -100,5 +99,3 @@ public slots:
     /// flood with specific color
     void flood (int colorIndex);
 };
-
-#endif // !_BOARD_HPP

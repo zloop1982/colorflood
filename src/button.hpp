@@ -15,8 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _BUTTON_HPP
-#define _BUTTON_HPP
+#pragma once
 
 #include <QPushButton>
 #include <QPainterPath>
@@ -56,5 +55,3 @@ private:
 protected:
     void paintEvent (QPaintEvent *event);
 };
-
-#endif // !_BUTTON_HPP

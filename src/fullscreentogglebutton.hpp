@@ -15,8 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FULLSCREENTOGGLEBUTTON_HPP
-#define _FULLSCREENTOGGLEBUTTON_HPP
+#pragma once
 
 #include <QToolButton>
 
@@ -43,8 +42,8 @@ FullScreenToggleButton::FullScreenToggleButton(QWidget *parent)
     setFixedSize(sizeHint());
 
     // set the background to 0.5 alpha
-    QPalette pal = palette();
-    QColor backgroundColor = pal.color(backgroundRole());
+    auto pal = palette();
+    auto backgroundColor = pal.color(backgroundRole());
     backgroundColor.setAlpha(128);
     pal.setColor(backgroundRole(), backgroundColor);
     setPalette(pal);
@@ -58,12 +57,10 @@ FullScreenToggleButton::FullScreenToggleButton(QWidget *parent)
 
 void FullScreenToggleButton::toggleFullscreen ()
 {
-    QWidget *parent = parentWidget();
+    auto parent = parentWidget();
 
     if (parent->isFullScreen())
         parent->showNormal();
     else
         parent->showFullScreen();
 }
-
-#endif // !_FULLSCREENTOGGLEBUTTON_HPP
